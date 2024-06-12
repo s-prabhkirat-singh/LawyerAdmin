@@ -1,11 +1,13 @@
-import React from 'react';
-import SignIn from '../components/signincomponent';
-export default function SignIn()
-{
-   return(
-      <div className = "w-screen">
-         <SignIn/>
-        
-         </div>
-   )
+import SiginComponent from "../components/sigincomponents";
+
+export default function Signin() {
+return(
+
+
+   <div className="w-full">
+
+   <SiginComponent/>
+       
+   </div>
+)
 }

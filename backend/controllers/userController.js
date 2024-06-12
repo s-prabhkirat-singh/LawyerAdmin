@@ -31,7 +31,7 @@ const register = (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(401).json({ errors: errors.array() });
   }
 
   db.query(
@@ -80,7 +80,7 @@ const login = (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(401).json({ errors: errors.array() });
   }
 
   
@@ -89,7 +89,7 @@ const login = (req, res) => {
     `SELECT * FROM users WHERE email = '${req.body.email}';`,
     (err, result) => {
       if (err) {
-        return res.status(400).send({ msg: err });
+        return res.status(401).send({ msg: err });
       }
 
       if (!result.length) {
@@ -99,7 +99,7 @@ const login = (req, res) => {
      
         bcrypt.compare(req.body.password, result[0]["password"], (bErr, bResult) => {
           if (bErr) {
-            return res.status(400).send({ msg: bErr });
+            return res.status(401).send({ msg: bErr });
           }
 
           if (bResult) {
@@ -151,7 +151,7 @@ const updatePass = (req, res) => {
   bcrypt.hash(req.body.password, 10, (err, hash) => {
     if (err) {
       console.log("error in hashing:", err);
-      return res.status(400).send({
+      return res.status(401).send({
         msg: "Error in hashing",
       });
     }

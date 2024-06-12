@@ -11,7 +11,7 @@ exports.loginValidation = [
   
   check("password", "Entere a password of min 6 length ").isLength({
     min: 6,
-    max: 8,
+    max: 118,
   }),
 ];
 

@@ -4,7 +4,7 @@ export default function Dashboard() {
 
       <div className="w-full">
 
-
+         <h1>Dashboard</h1>
       </div>
    )
 

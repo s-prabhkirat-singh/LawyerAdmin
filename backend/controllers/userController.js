@@ -35,7 +35,7 @@ const register = (req, res) => {
   }
 
   db.query(
-    `SELECT * FROM users1 WHERE LOWER(phone) = LOWER(${db.escape(
+    `SELECT * FROM users WHERE LOWER(phone) = LOWER(${db.escape(
       req.body.phone.replace(/\+/, '')
     )})`,
     (err, result) => {
@@ -56,7 +56,7 @@ const register = (req, res) => {
           let phone = req.body.phone.replace(/\+/, '');
 
           db.query(
-            `INSERT INTO users1 (name, phone, password, username) VALUES ('${req.body.name}', ${db.escape(phone)}, ${db.escape(hash)}, '${req.body.username}')`,
+            `INSERT INTO users (name, phone, password, username) VALUES ('${req.body.name}', ${db.escape(phone)}, ${db.escape(hash)}, '${req.body.username}')`,
             (err, result) => {
               if (err) {
                 console.log("error in insertion", err);
@@ -86,7 +86,7 @@ const login = (req, res) => {
   let phone = req.body.phone.replace(/\+/, '');
 
   db.query(
-    `SELECT * FROM users1 WHERE phone = ${db.escape(phone)};`,
+    `SELECT * FROM users WHERE phone = ${db.escape(phone)};`,
     (err, result) => {
       if (err) {
         return res.status(400).send({ msg: err });
@@ -96,7 +96,7 @@ const login = (req, res) => {
         return res.status(401).send({ msg: "Entered Mobile Number or Password is incorrect!" });
       }
 
-      if (result[0]["isVerified"] == 1) {
+     
         bcrypt.compare(req.body.password, result[0]["password"], (bErr, bResult) => {
           if (bErr) {
             return res.status(400).send({ msg: bErr });
@@ -114,9 +114,7 @@ const login = (req, res) => {
             return res.status(401).send({ msg: "Entered Mobile Number or Password is incorrect!" });
           }
         });
-      } else {
-        return res.status(400).send({ msg: "First verify yourself or try login with OTP once" });
-      }
+     
     }
   );
 };
@@ -144,100 +142,8 @@ const checkPass = (req, res) => {
   );
 };
 
-const verifyNum = (req, res) => {
-  let phone = req.body.phone.replace(/\+/, '');
-  db.query(
-    `SELECT * FROM users1 WHERE phone =${db.escape(phone)};`,
-    (err, result) => {
-      if (err) {
-        return res.status(400).send({
-          msg: err,
-        });
-      }
-
-      if (!result.length) {
-        return res.status(401).send({
-          msg: "Entered Mobile Number is incorrect!",
-        });
-      }
-    }
-  );
-
-  console.log("phone:", req.body.phone);
-  client.messages.create({
-    body: `Your OTP for registration is: ${otp}`,
-    from: "+12492941313",
-    to: req.body.phone,
-  })
-    .then((message) => {
-      console.log("OTP sent:", message.sid);
-    });
-};
 
 
-const loginOtp = (req, res) => {
-  const { otpMatch } = req.body;
-  const jwt_secret = JWT_SECRET;
-  const errors = validationResult(req); 
-  const phone = req.body.phone;
-
-db.query(
-  'SELECT isVerified FROM users1 WHERE phone = ?',
-  [phone],
-  (err, results) => {
-    if (err) {
-      console.error('Error fetching isVerified:', err);
-      return res.status(500).send('Error fetching isVerified');
-    }
-
-    if (results.length > 0) {
-      const isVerified = results[0].isVerified;
-     
-db.query(
-  'UPDATE users1 SET isVerified = 1 WHERE phone = ?',
-  [phone],
-  (err, result) => {
-    if (err) {
-      console.error('Error updating isVerified:', err);
-      return res.status(500).send('Error updating isVerified');
-    }
-
-    if (result.affectedRows > 0) {
-    
-
-
-
-  if (otpMatch) {
-    if (otpMatch == otp) {
-      // Generate JWT token
-      const token = jwt.sign({ phone: req.body.phone }, jwt_secret, {
-        expiresIn: "2d" // Token expires in 2 days
-      });
-
-      return res.status(200).send({
-        msg: "Logged In",
-        token, // Include the generated token in the response
-      });
-    } else {
-      return res.status(401).send({
-        msg: "Entered Mobile Number or Password is incorrect!",
-      });
-    }
-  } else {
-    return res.status(400).send("Wrong OTP entered");
-  }
-
-} else {
-  return res.status(404).send('User not found');
-}
-}
-);
-} else {
-  return res.status(404).send('User not found');
-}
-}
-);
-};
 
 ;
 
@@ -273,7 +179,7 @@ const logout = (req, res) => {
   const decode = jwt.verify(authToken, JWT_SECRET);
 
   db.query(
-    "SELECT * FROM users1 WHERE id=?",
+    "SELECT * FROM users WHERE id=?",
     [decode.id],
     function (error, result, fields) {
       if (error) throw error;
@@ -291,7 +197,7 @@ const getUser = (req, res) => {
   console.log([decode.id])
 
   db.query(
-    "SELECT * FROM users1 WHERE id=?",
+    "SELECT * FROM users WHERE id=?",
     [decode.id], // Pass an array with the value for the placeholder
     function (error, result, fields) {
       if (error) throw error;
@@ -311,8 +217,7 @@ module.exports = {
   login,
   
   checkPass,
-  loginOtp,
-  verifyNum,
+  
   updatePass,
   secretKey,
   logout,

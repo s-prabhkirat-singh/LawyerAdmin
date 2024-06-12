@@ -17,24 +17,9 @@ exports.loginValidation = [
     max: 8,
   }),
 ];
-exports.OtpLoginValidation = [
-  check("phone", "Please Enter a valid Phone Number").isMobilePhone(),
-  check("otpMatch", "Please Enter a valid OTP")
- 
-];
-exports.numberValidation = [
-  check("phone", "Please Enter a valid Phone Number").isMobilePhone()
 
- 
-];
 exports.updateValidation = [
   check("phone", "Please Enter a valid Phone Number").isMobilePhone(),
   check("password", "Password is required").isLength({ min: 6, max: 8 }),
 
- 
-];
-exports.walletValidation = [
-  check("phone", "Please Enter a valid Phone Number").isMobilePhone()
-  
- 
 ];

@@ -35,8 +35,8 @@ const register = (req, res) => {
   }
 
   db.query(
-    `SELECT * FROM users WHERE LOWER(phone) = LOWER(${db.escape(
-      req.body.phone.replace(/\+/, '')
+    `SELECT * FROM users WHERE email = (${db.escape(
+      req.body.email
     )})`,
     (err, result) => {
       if (err) {
@@ -53,10 +53,10 @@ const register = (req, res) => {
             return res.status(500).send({ msg: "Error in hashing" });
           }
 
-          let phone = req.body.phone.replace(/\+/, '');
+         
 
           db.query(
-            `INSERT INTO users (name, phone, password, username) VALUES ('${req.body.name}', ${db.escape(phone)}, ${db.escape(hash)}, '${req.body.username}')`,
+            `INSERT INTO users (name, email, password, username) VALUES ('${req.body.name}', '${req.body.email}', ${db.escape(hash)}, '${req.body.username}')`,
             (err, result) => {
               if (err) {
                 console.log("error in insertion", err);
@@ -64,7 +64,7 @@ const register = (req, res) => {
               }
 
             
-              return res.status(200).json({ msg: "User registered and wallet created successfully" });
+              return res.status(200).json({ msg: "User registered successfully" });
             }
           );
         });
@@ -83,17 +83,17 @@ const login = (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  let phone = req.body.phone.replace(/\+/, '');
+  
 
   db.query(
-    `SELECT * FROM users WHERE phone = ${db.escape(phone)};`,
+    `SELECT * FROM users WHERE email = '${req.body.email}';`,
     (err, result) => {
       if (err) {
         return res.status(400).send({ msg: err });
       }
 
       if (!result.length) {
-        return res.status(401).send({ msg: "Entered Mobile Number or Password is incorrect!" });
+        return res.status(401).send({ msg: "Entered password or email is incorrect!" });
       }
 
      
@@ -111,7 +111,7 @@ const login = (req, res) => {
               token 
             });
           } else {
-            return res.status(401).send({ msg: "Entered Mobile Number or Password is incorrect!" });
+            return res.status(401).send({ msg: "Entered password or email is incorrect!" });
           }
         });
      
@@ -121,11 +121,11 @@ const login = (req, res) => {
 
 
 const checkPass = (req, res) => {
-  const { phone } = req.query;
+  const { email } = req.query;
 
   db.query(
-    `SELECT * FROM users WHERE phone = ?`,
-    [phone],
+    `SELECT * FROM users WHERE email = ?`,
+    [email],
     (err, results) => {
       if (err) {
         console.error("Database error:", err);
@@ -136,7 +136,7 @@ const checkPass = (req, res) => {
       if (results.length > 0) {
         res.send("You are registered!");
       } else {
-        res.send("Your listed phone number is not registered");
+        res.send("Your listed email number is not registered");
       }
     }
   );
@@ -157,8 +157,8 @@ const updatePass = (req, res) => {
     }
 
     db.query(
-      `UPDATE users SET password = ? WHERE phone = ?`,
-      [hash, req.body.phone],
+      `UPDATE users SET password = ? WHERE email = ?`,
+      [hash, req.body.email],
       (err, result) => {
         if (err) {
           console.error("Error updating password:", err);

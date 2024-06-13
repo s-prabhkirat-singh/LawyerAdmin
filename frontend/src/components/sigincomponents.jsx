@@ -1,14 +1,40 @@
 import { useForm } from 'react-hook-form';
 import { Signin } from '../services/auth';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useState } from 'react';
+
 
 export default function SiginComponent() {
-
+  const navigate = useNavigate();
    const { register, handleSubmit, formState: { errors } } = useForm();
-
+  const[error,seterror]= useState("")
    function onSubmit(formData) {
       
+    //console.log(data);
+    const url = "http://localhost:8000/api/login";
+      try {
+        axios.post(url, formData).then((response)=>{
+          console.log(response.data);
+          console.log(response);
+           localStorage.setItem("token",response.data.token);
+           navigate("/dashboard")
+
+        }).catch((error)=>{
+          console.log(error)
+          seterror(error.message)
+        })
+        
+        
+       
+    } catch (error) {
+        console.log(error.message);
+        return error
+    }
+
+      
      
-      Signin(formData)
+      
     }
 
 
@@ -20,6 +46,7 @@ export default function SiginComponent() {
             <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
          </div>
 
+<span className='text-red-500 text-center'>{error}</span>
          <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
       <div>

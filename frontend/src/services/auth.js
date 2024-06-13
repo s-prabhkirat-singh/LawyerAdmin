@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 const storetoken = (token) => {
-   localStorage.setItem("tokne", token);
+   localStorage.setItem("token", token);
    console.log(token);
 }
 

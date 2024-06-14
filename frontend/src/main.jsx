@@ -14,21 +14,21 @@ const router = createBrowserRouter([
 
   {
 
-    path:"/",
-    element: <App/>,
-    children:[
-      {path:"/", element: <Landing/>},
-      { path:"/signin", element: <Signin/>},
-      { path:"/dashboard", element: <Dashboard/>}
+    path: "/",
+    element: <App />,
+    children: [
+      { path: "/", element: <Landing /> },
+      { path: "/signin", element: <Signin /> },
+      { path: "/dashboard", element: <Dashboard /> }
     ]
   }
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
 
-  <RouterProvider router={router}>
-  <App />
-  </RouterProvider>
-    
+    <RouterProvider router={router}>
+      <App />
+    </RouterProvider>
+
   </React.StrictMode>,
 )

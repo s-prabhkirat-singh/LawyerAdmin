@@ -1,13 +1,13 @@
 import SiginComponent from "../components/sigincomponents";
 
 export default function Signin() {
-return(
+   return (
 
 
-   <div className="w-full">
+      <div className="w-full">
 
-   <SiginComponent/>
-       
-   </div>
-)
+         <SiginComponent />
+
+      </div>
+   )
 }

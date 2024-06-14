@@ -6,7 +6,7 @@ import { useNavigate , useLocation} from 'react-router-dom';
 export default function ProtectedRoutes({children})
 {
    const navigate = useNavigate();
-   const location = useLocation();
+  //  const location = useLocation();
    useEffect(() => {
 
      const token = localStorage.getItem('token');

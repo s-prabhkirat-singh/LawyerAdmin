@@ -189,27 +189,34 @@ const logout = (req, res) => {
   )
 
 };
+
 const getUser = (req, res) => {
   const authToken = req.headers.authorization.split(" ")[1];
   const decode = jwt.verify(authToken, JWT_SECRET);
-  console.log(decode)
-  console.log([decode.walletId])
-  console.log([decode.id])
+  
+  console.log(decode);
+  console.log([decode.walletId]);
+  console.log([decode.id]);
 
   db.query(
-    "SELECT * FROM users WHERE id=?",
-    [decode.id], // Pass an array with the value for the placeholder
+    "SELECT name FROM users",  // Modify the query to select only the 'name' field
     function (error, result, fields) {
       if (error) throw error;
 
-      return res.status(200).send({
-        success: true,
-        data: result[0],
-        message: "Fetch Successfully",
-      });
+      if (result.length > 0) {
+        return res.status(200).send({
+          success: true,
+          data: result,  // Return the array of names
+          message: "Fetch Successfully",
+        });
+      } else {
+        return res.status(404).send({
+          success: false,
+          message: "No users found",
+        });
+      }
     }
   );
-
 };
 
 module.exports = {

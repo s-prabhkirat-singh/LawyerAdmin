@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 var db = require("./config/dbConnection");
 
 const userRouter = require("./routes/userRoutes");
+const pageRouter = require('./routes/updateDataRoutes/pageRoutes');
+const HomeRouter = require('./routes/updateDataRoutes/homeRoutes');
+const aboutRouter = require('./routes/updateDataRoutes/aboutRoutes');
 
 
 
@@ -18,7 +21,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
-app.use("/api", userRouter);
+app.use("/api", userRouter,HomeRouter,aboutRouter);
+app.get("/",(req,res)=>{
+  res.send("hello")
+})
+app.use("/api", pageRouter);
 app.get("/",(req,res)=>{
   res.send("hello")
 })

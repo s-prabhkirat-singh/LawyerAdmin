@@ -6,10 +6,12 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Signin from './pages/SignIn.jsx'
 import Landing from './pages/landing.jsx'
 import Dashboard from './pages/dashboard.jsx'
+import { store, persistor } from './Redux/store.js'
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux'
 
 
-
-const router = createBrowserRouter([
+/*const router = createBrowserRouter([
 
 
   {
@@ -22,13 +24,20 @@ const router = createBrowserRouter([
       { path: "/dashboard", element: <Dashboard /> }
     ]
   }
-])
+])*/
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
 
-    <RouterProvider router={router}>
-      <App />
-    </RouterProvider>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <React.StrictMode>
 
-  </React.StrictMode>,
+       
+          <App />
+        
+
+      </React.StrictMode>,
+    </PersistGate>
+
+  </Provider>
+
 )

@@ -1,22 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Signin from './pages/SignIn'
-import { Outlet } from 'react-router-dom' 
-import ProtectedRoutes from './utilites/protectedroutes'
+import React, { lazy, Suspense } from 'react';
+import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import PrivateRoute from './utilites/PrivateRoute';
+
+const Landing = lazy(() => import('./pages/landing'));
+const SignIn = lazy(() => import('./pages/SignIn'));
+const Dashboard = lazy(() => import('./pages/dashboard'));
+const Home = lazy(() => import('./pages/subpages/home'));
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className='w-screen'>
-    <ProtectedRoutes>
-    <Outlet/>
-    </ProtectedRoutes>
-     
-    </div>
-  )
+    <BrowserRouter>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/signin" element={<SignIn />} />
+
+          <Route  element={<PrivateRoute />}>
+
+          <Route path="/dashboard" element={<Dashboard />}>
+          <Route index element={<Home />} />
+         
+          {/* Add more nested routes as needed */}
+        </Route>
+
+          </Route>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

@@ -39,5 +39,22 @@ const completeData= async (req, res) => {
       }
     };
 
+    const getAboutDataById = async (req, res) => {
+        const { id } = req.body;
+      
+        try {
+          const about = await About.findOne({ where: { id } });
+      
+          if (!about) {
+            return res.status(404).json({ msg: "About data not found" });
+          }
+      
+          return res.status(200).json({ data: about });
+        } catch (err) {
+          console.error("Database error:", err);
+          return res.status(500).send({ msg: "Database error" });
+        }
+      };
 
-module.exports = {completeData};
+
+module.exports = {completeData, getAboutDataById};

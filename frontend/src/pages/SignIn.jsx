@@ -1,6 +1,6 @@
 import SiginComponent from "../components/sigincomponents";
 
-export default function Signin() {
+export default function SignIn() {
    return (
 
 

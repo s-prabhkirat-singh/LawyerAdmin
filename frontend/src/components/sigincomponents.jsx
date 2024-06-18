@@ -3,21 +3,34 @@ import { Signin } from '../services/auth';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useState } from 'react';
+import SignIn from '../pages/SignIn';
+import { useDispatch } from 'react-redux';
+import { signin } from '../Redux/authslice';
 
 
 export default function SiginComponent() {
+
   const navigate = useNavigate();
    const { register, handleSubmit, formState: { errors } } = useForm();
   const[error,seterror]= useState("")
+
+  const dispatch = useDispatch();
+
    function onSubmit(formData) {
       
-    //console.log(data);
+    console.log(formData);
+
+    
+
+
+
     const url = "http://localhost:8000/api/login";
       try {
         axios.post(url, formData).then((response)=>{
           console.log(response.data);
           console.log(response);
-           localStorage.setItem("token",response.data.token);
+           //localStorage.setItem("token",response.data.token);
+           dispatch(signin(response.data.token))
            navigate("/dashboard")
 
         }).catch((error)=>{

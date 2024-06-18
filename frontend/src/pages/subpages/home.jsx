@@ -1,71 +1,37 @@
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import axios from 'axios';
-axios.defaults.baseURL = 'https://6t7m9ptx-8000.inc1.devtunnels.ms/';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+import RTE from '../../components/rte';
+
+
 export default function Home() {
 
-   const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+   const { register, handleSubmit, formState: { errors }, setValue , control ,getValues} = useForm({
+      defaultValues:{
+         headerdescription : "",
+         bottomsectiondescription : ""
+      }
+   });
 
    const [loading, setloading] = useState(false)
 
    const [error, seterror] = useState("")
 
+   const [update,setupdate]= useState(false)
+
    const [homedata, sethomedata] = useState()
 
-   const create = async (data) => {
-      setloading(true);
-      data.id = 1;
-      console.log('Data to be sent:', data);
-    
-      try {
-        const response = await axios.post("/api/addHomeData", data);
-    
-        console.log('Response received:', response);
-    
-        // Assuming the data is in response.data.data
-        // setHomeData(response.data.data);
-    
-        seterror("");
-        setloading(false);
-    
-        // Uncomment and modify according to your response structure
-        // setValue('metatitle', response.data.data.metatitle);
-        // setValue('metadescription', response.data.data.metadescription);
-        // setValue('metatags', response.data.data.metatags);
-        // setValue('metaimage', response.data.data.metaimage);
-        // setValue('headertitle', response.data.data.headertitle);
-        // setValue('headerdescription', response.data.data.headerdescription);
-        // setValue('headerbuttonlabel', response.data.data.headerbuttonlabel);
-        // setValue('headerbuttonlink', response.data.data.headerbuttonlink);
-        // setValue('headerbgimage', response.data.data.headerbgimage);
-        // setValue('bottomsectiontitle', response.data.data.bottomsectiontitle);
-        // setValue('bottomsectiondescription', response.data.data.bottomsectiondescription);
-        // setValue('bottomsectionimage', response.data.data.bottomsectionimage);
-    
-      } catch (error) {
-        console.log('Error:', error);
-        seterror(error.message);
-        setloading(false);
-    
-        // Log error details for debugging
-        if (error.response) {
-          console.log('Response data:', error.response.data);
-          console.log('Response status:', error.response.status);
-          console.log('Response headers:', error.response.headers);
-        } else if (error.request) {
-          console.log('Request data:', error.request);
-        } else {
-          console.log('Error message:', error.message);
-        }
-      }
-    };
-    
+   const[metaimage,setMetaImage]=useState("")
+
+
+
+   
    const fetchdata = async () => {
       setloading(true)
       try {
 
-         await axios.get("http://localhost:8000/api/getHomeData/1", {
+         await axios.get("https://6t7m9ptx-8000.inc1.devtunnels.ms/api/getHomeData/1", {
 
          })
 
@@ -91,7 +57,7 @@ export default function Home() {
                setValue('bottomsectiontitle', response.data.data.bottomsectiontitle);
                setValue('bottomsectiondescription', response.data.data.bottomsectiondescription);
                setValue('bottomsectionimage', response.data.data.bottomsectionimage);
-
+               setMetaImage(response.data.data.metaimage)
 
 
 
@@ -111,62 +77,65 @@ export default function Home() {
    useEffect(() => {
       fetchdata()
 
-   }, [])
+   }, [update])
 
 
 
 
 
-   // const create = async (data) => {
+   const create = async (data) => {
 
       
-   //    setloading(true)
-   //    data.id=1;
-   //    console.log(data);
+      setloading(true)
+      data.id = 1
+      console.log(data);
+      
+      try {
 
-   //    try {
-            
-   //       await axios.post("http://localhost:8000/api/addHomeData", { data})
+        await axios.post("https://6t7m9ptx-8000.inc1.devtunnels.ms/api/addHomeData",  data).then((response) => {
 
-   //          .then(response => {
-
-   //             console.log(response)
-   //             //sethomedata(response.data.data)
+               console.log(response)
+               //sethomedata(response.data.data)
 
 
 
-   //             seterror("")
+               seterror("")
+               console.log("response ",response)
+               setupdate(!update)
+         setloading(false)
 
 
-   //             /*setValue('metatitle', response.data.data.metatitle);
-   //             setValue('metadescription', response.data.data.metadescription);
-   //             setValue('metatags', response.data.data.metatags);
-   //             setValue('metaimage', response.data.data.metaimage);
-   //             setValue('headertitle', response.data.data.headertitle);
-   //             setValue('headerdescription', response.data.data.headerdescription);
-   //             setValue('headerbuttonlabel', response.data.data.headerbuttonlabel);
-   //             setValue('headerbuttonlink', response.data.data.headerbuttonlink);
-   //             setValue('headerbgimage', response.data.data.headerbgimage);
-   //             setValue('bottomsectiontitle', response.data.data.bottomsectiontitle);
-   //             setValue('bottomsectiondescription', response.data.data.bottomsectiondescription);
-   //             setValue('bottomsectionimage', response.data.data.bottomsectionimage);*/
+               /*setValue('metatitle', response.data.data.metatitle);
+               setValue('metadescription', response.data.data.metadescription);
+               setValue('metatags', response.data.data.metatags);
+               setValue('metaimage', response.data.data.metaimage);
+               setValue('headertitle', response.data.data.headertitle);
+               setValue('headerdescription', response.data.data.headerdescription);
+               setValue('headerbuttonlabel', response.data.data.headerbuttonlabel);
+               setValue('headerbuttonlink', response.data.data.headerbuttonlink);
+               setValue('headerbgimage', response.data.data.headerbgimage);
+               setValue('bottomsectiontitle', response.data.data.bottomsectiontitle);
+               setValue('bottomsectiondescription', response.data.data.bottomsectiondescription);
+               setValue('bottomsectionimage', response.data.data.bottomsectionimage);*/
 
 
 
 
-   //             setloading(false)
+               setloading(false)
 
-   //          }).catch(error => {
+            }).catch(error => {
 
-   //             setloading(false)
-   //          })
+               setloading(false)
+            })
 
-   //    } catch (error) {
-   //       console.log("error", error)
-   //       seterror(error.message)
-   //       setloading(false)
-   //    }
-   // }
+      } catch (error) {
+         console.log("error", error)
+         seterror(error.message)
+         setloading(false)
+      }
+   }
+
+  
 
 
    return (
@@ -243,8 +212,8 @@ export default function Home() {
                            id="metaimage"
                            name="metaimage"
                            type="file"
-                           accept='image/*'
                            autoComplete="text"
+                           accept='image/*'
                            required
                            className="block w-56 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('metaimage', { required: 'metaimage is required' })}
@@ -269,24 +238,15 @@ export default function Home() {
                      </div>
                   </div>
 
-                  <div className='p-2'>
-                     <label htmlFor="headerdescription" className="block text-sm font-medium leading-6 text-gray-900">Headerdescription</label>
-                     <div className="mt-2">
-                        <input
-                           id="headerdescription"
-                           name="headerdescription"
-                           type="text"
-                           autoComplete="text"
-                           required
-                           className="block w-56 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('headerdescription', { required: 'headerdescription is required' })}
-                        />
-                        {errors.headerdescription && <p className="text-red-500 text-sm">{errors.headerdescription.message}</p>}
-                     </div>
-                  </div>
+                  
 
 
 
+               </div>
+
+               <div className='p-2'>
+
+               <RTE label="Headerdescription :" name="headerdescription" control={control} defaultValue={getValues("headerdescription")} />
                </div>
 
 
@@ -319,8 +279,21 @@ export default function Home() {
                            autoComplete="text"
                            required
                            className="block w-56 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('headerbgimage', { required: 'headerbgimage is required' })}
+                           {...register('headerbgimage')}
                         />
+
+                        
+
+                        {
+
+                           
+                           metaimage ? ( <div>
+
+                           <label htmlFor="headerbgimage" className="block text-sm font-medium leading-6 text-gray-900">Headerbgimage</label>
+                           <img src={metaimage} alt="headerbgimage" className="w-20 h-20" />
+                           
+                           </div>) : null
+                        }
                         {errors.headerbgimage && <p className="text-red-500 text-sm">{errors.headerbgimage.message}</p>}
                      </div>
                   </div>
@@ -364,21 +337,7 @@ export default function Home() {
                      </div>
                   </div>
 
-                  <div className='p-2'>
-                     <label htmlFor="bottomsectiondescription" className="block text-sm font-medium leading-6 text-gray-900">Bottomsectiondescription</label>
-                     <div className="mt-2">
-                        <input
-                           id="bottomsectiondescription"
-                           name="bottomsectiondescription"
-                           type="text"
-                           autoComplete="text"
-                           required
-                           className="block w-56 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('bottomsectiondescription', { required: 'bottomsectiondescription is required' })}
-                        />
-                        {errors.bottomsectiondescription && <p className="text-red-500 text-sm">{errors.bottomsectiondescription.message}</p>}
-                     </div>
-                  </div>
+                 
 
                   <div className='p-2'>
                      <label htmlFor="bottomsectionimage" className="block text-sm font-medium leading-6 text-gray-900">Bottomsectionimage</label>
@@ -402,7 +361,10 @@ export default function Home() {
 
 
 
+               <div className='flex flex-row flex-wrap justify-center mt-2 w-2/3'>
 
+<RTE label="Bottomsectiondescription :" name="bottomsectiondescription" control={control} defaultValue={getValues("bottomsectiondescription")} />
+</div>
 
 
 

@@ -7,10 +7,10 @@ import RTE from '../../components/rte';
 
 export default function Home() {
 
-   const { register, handleSubmit, formState: { errors }, setValue , control ,getValues} = useForm({
-      defaultValues:{
-         headerdescription : "",
-         bottomsectiondescription : ""
+   const { register, handleSubmit, formState: { errors }, setValue, control, getValues } = useForm({
+      defaultValues: {
+         headerdescription: "",
+         bottomsectiondescription: ""
       }
    });
 
@@ -18,15 +18,15 @@ export default function Home() {
 
    const [error, seterror] = useState("")
 
-   const [update,setupdate]= useState(false)
+   const [update, setupdate] = useState(false)
 
    const [homedata, sethomedata] = useState()
 
-   const[metaimage,setMetaImage]=useState("")
+   const [metaimage, setMetaImage] = useState("")
 
 
 
-   
+
    const fetchdata = async () => {
       setloading(true)
       try {
@@ -85,48 +85,48 @@ export default function Home() {
 
    const create = async (data) => {
 
-      
+
       setloading(true)
       data.id = 1
       console.log(data);
-      
+
       try {
 
-        await axios.post("https://6t7m9ptx-8000.inc1.devtunnels.ms/api/addHomeData",  data).then((response) => {
+         await axios.post("https://6t7m9ptx-8000.inc1.devtunnels.ms/api/addHomeData", data).then((response) => {
 
-               console.log(response)
-               //sethomedata(response.data.data)
-
-
-
-               seterror("")
-               console.log("response ",response)
-               setupdate(!update)
-         setloading(false)
-
-
-               /*setValue('metatitle', response.data.data.metatitle);
-               setValue('metadescription', response.data.data.metadescription);
-               setValue('metatags', response.data.data.metatags);
-               setValue('metaimage', response.data.data.metaimage);
-               setValue('headertitle', response.data.data.headertitle);
-               setValue('headerdescription', response.data.data.headerdescription);
-               setValue('headerbuttonlabel', response.data.data.headerbuttonlabel);
-               setValue('headerbuttonlink', response.data.data.headerbuttonlink);
-               setValue('headerbgimage', response.data.data.headerbgimage);
-               setValue('bottomsectiontitle', response.data.data.bottomsectiontitle);
-               setValue('bottomsectiondescription', response.data.data.bottomsectiondescription);
-               setValue('bottomsectionimage', response.data.data.bottomsectionimage);*/
+            console.log(response)
+            //sethomedata(response.data.data)
 
 
 
+            seterror("")
+            console.log("response ", response)
+            setupdate(!update)
+            setloading(false)
 
-               setloading(false)
 
-            }).catch(error => {
+            /*setValue('metatitle', response.data.data.metatitle);
+            setValue('metadescription', response.data.data.metadescription);
+            setValue('metatags', response.data.data.metatags);
+            setValue('metaimage', response.data.data.metaimage);
+            setValue('headertitle', response.data.data.headertitle);
+            setValue('headerdescription', response.data.data.headerdescription);
+            setValue('headerbuttonlabel', response.data.data.headerbuttonlabel);
+            setValue('headerbuttonlink', response.data.data.headerbuttonlink);
+            setValue('headerbgimage', response.data.data.headerbgimage);
+            setValue('bottomsectiontitle', response.data.data.bottomsectiontitle);
+            setValue('bottomsectiondescription', response.data.data.bottomsectiondescription);
+            setValue('bottomsectionimage', response.data.data.bottomsectionimage);*/
 
-               setloading(false)
-            })
+
+
+
+            setloading(false)
+
+         }).catch(error => {
+
+            setloading(false)
+         })
 
       } catch (error) {
          console.log("error", error)
@@ -135,7 +135,7 @@ export default function Home() {
       }
    }
 
-  
+
 
 
    return (
@@ -220,6 +220,17 @@ export default function Home() {
                         />
                         {errors.metaimage && <p className="text-red-500 text-sm">{errors.metaimage.message}</p>}
                      </div>
+
+                     {
+
+
+                        metaimage ? (<div>
+
+                           <label htmlFor="headerbgimage" className="block text-sm font-medium leading-6 text-gray-900">Headerbgimage</label>
+                           <img src={metaimage} alt="headerbgimage" className="w-20 h-20" />
+
+                        </div>) : null
+                     }
                   </div>
 
                   <div className='p-2'>
@@ -238,7 +249,7 @@ export default function Home() {
                      </div>
                   </div>
 
-                  
+
 
 
 
@@ -246,7 +257,7 @@ export default function Home() {
 
                <div className='p-2'>
 
-               <RTE label="Headerdescription :" name="headerdescription" control={control} defaultValue={getValues("headerdescription")} />
+                  <RTE label="Headerdescription :" name="headerdescription" control={control} defaultValue={getValues("headerdescription")} />
                </div>
 
 
@@ -275,27 +286,30 @@ export default function Home() {
                         <input
                            id="headerbgimage"
                            name="headerbgimage"
-                           type="text"
+                           type="file"
                            autoComplete="text"
+                           accept='image/*'
                            required
                            className="block w-56 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('headerbgimage')}
                         />
 
-                        
 
-                        {
 
-                           
-                           metaimage ? ( <div>
+
+                        {errors.headerbgimage && <p className="text-red-500 text-sm">{errors.headerbgimage.message}</p>}
+                     </div>
+
+                     {
+
+
+                        metaimage ? (<div>
 
                            <label htmlFor="headerbgimage" className="block text-sm font-medium leading-6 text-gray-900">Headerbgimage</label>
                            <img src={metaimage} alt="headerbgimage" className="w-20 h-20" />
-                           
-                           </div>) : null
-                        }
-                        {errors.headerbgimage && <p className="text-red-500 text-sm">{errors.headerbgimage.message}</p>}
-                     </div>
+
+                        </div>) : null
+                     }
                   </div>
 
                   <div className='p-2'>
@@ -337,22 +351,36 @@ export default function Home() {
                      </div>
                   </div>
 
-                 
+
 
                   <div className='p-2'>
                      <label htmlFor="bottomsectionimage" className="block text-sm font-medium leading-6 text-gray-900">Bottomsectionimage</label>
+
+
                      <div className="mt-2">
                         <input
                            id="bottomsectionimage"
                            name="bottomsectionimage"
-                           type="text"
+                           type="file"
                            autoComplete="text"
+                           accept='image/*'
                            required
                            className="block w-56 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('bottomsectionimage', { required: 'bottomsectionimage is required' })}
                         />
                         {errors.bottomsectionimage && <p className="text-red-500 text-sm">{errors.bottomsectionimage.message}</p>}
                      </div>
+
+                     {
+
+
+                        metaimage ? (<div>
+
+                           <label htmlFor="headerbgimage" className="block text-sm font-medium leading-6 text-gray-900">Headerbgimage</label>
+                           <img src={metaimage} alt="headerbgimage" className="w-20 h-20" />
+
+                        </div>) : null
+                     }
                   </div>
 
 
@@ -363,8 +391,8 @@ export default function Home() {
 
                <div className='flex flex-row flex-wrap justify-center mt-2 w-2/3'>
 
-<RTE label="Bottomsectiondescription :" name="bottomsectiondescription" control={control} defaultValue={getValues("bottomsectiondescription")} />
-</div>
+                  <RTE label="Bottomsectiondescription :" name="bottomsectiondescription" control={control} defaultValue={getValues("bottomsectiondescription")} />
+               </div>
 
 
 

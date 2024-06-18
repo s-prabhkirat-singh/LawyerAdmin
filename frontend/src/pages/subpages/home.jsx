@@ -1,17 +1,32 @@
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import axios from 'axios';
+
+import RTE from '../../components/rte';
+
+
 export default function Home() {
 
-   const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+   const { register, handleSubmit, formState: { errors }, setValue , control ,getValues} = useForm({
+      defaultValues:{
+         headerdescription : "",
+         bottomsectiondescription : ""
+      }
+   });
 
    const [loading, setloading] = useState(false)
 
    const [error, seterror] = useState("")
 
+   const [update,setupdate]= useState(false)
+
    const [homedata, sethomedata] = useState()
 
+   const[metaimage,setMetaImage]=useState("")
 
+
+
+   
    const fetchdata = async () => {
       setloading(true)
       try {
@@ -42,7 +57,7 @@ export default function Home() {
                setValue('bottomsectiontitle', response.data.data.bottomsectiontitle);
                setValue('bottomsectiondescription', response.data.data.bottomsectiondescription);
                setValue('bottomsectionimage', response.data.data.bottomsectionimage);
-
+               setMetaImage(response.data.data.metaimage)
 
 
 
@@ -62,7 +77,7 @@ export default function Home() {
    useEffect(() => {
       fetchdata()
 
-   }, [])
+   }, [update])
 
 
 
@@ -72,12 +87,12 @@ export default function Home() {
 
       
       setloading(true)
+      data.id = 1
       console.log(data);
+      
       try {
 
-         await axios.put("https://6t7m9ptx-8000.inc1.devtunnels.ms/api/addHomeData/1", { data})
-
-            .then(response => {
+        await axios.post("https://6t7m9ptx-8000.inc1.devtunnels.ms/api/addHomeData",  data).then((response) => {
 
                console.log(response)
                //sethomedata(response.data.data)
@@ -85,6 +100,9 @@ export default function Home() {
 
 
                seterror("")
+               console.log("response ",response)
+               setupdate(!update)
+         setloading(false)
 
 
                /*setValue('metatitle', response.data.data.metatitle);
@@ -116,6 +134,8 @@ export default function Home() {
          setloading(false)
       }
    }
+
+  
 
 
    return (
@@ -191,8 +211,9 @@ export default function Home() {
                         <input
                            id="metaimage"
                            name="metaimage"
-                           type="text"
+                           type="file"
                            autoComplete="text"
+                           accept='image/*'
                            required
                            className="block w-56 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('metaimage', { required: 'metaimage is required' })}
@@ -217,24 +238,15 @@ export default function Home() {
                      </div>
                   </div>
 
-                  <div className='p-2'>
-                     <label htmlFor="headerdescription" className="block text-sm font-medium leading-6 text-gray-900">Headerdescription</label>
-                     <div className="mt-2">
-                        <input
-                           id="headerdescription"
-                           name="headerdescription"
-                           type="text"
-                           autoComplete="text"
-                           required
-                           className="block w-56 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('headerdescription', { required: 'headerdescription is required' })}
-                        />
-                        {errors.headerdescription && <p className="text-red-500 text-sm">{errors.headerdescription.message}</p>}
-                     </div>
-                  </div>
+                  
 
 
 
+               </div>
+
+               <div className='p-2'>
+
+               <RTE label="Headerdescription :" name="headerdescription" control={control} defaultValue={getValues("headerdescription")} />
                </div>
 
 
@@ -267,8 +279,21 @@ export default function Home() {
                            autoComplete="text"
                            required
                            className="block w-56 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('headerbgimage', { required: 'headerbgimage is required' })}
+                           {...register('headerbgimage')}
                         />
+
+                        
+
+                        {
+
+                           
+                           metaimage ? ( <div>
+
+                           <label htmlFor="headerbgimage" className="block text-sm font-medium leading-6 text-gray-900">Headerbgimage</label>
+                           <img src={metaimage} alt="headerbgimage" className="w-20 h-20" />
+                           
+                           </div>) : null
+                        }
                         {errors.headerbgimage && <p className="text-red-500 text-sm">{errors.headerbgimage.message}</p>}
                      </div>
                   </div>
@@ -312,21 +337,7 @@ export default function Home() {
                      </div>
                   </div>
 
-                  <div className='p-2'>
-                     <label htmlFor="bottomsectiondescription" className="block text-sm font-medium leading-6 text-gray-900">Bottomsectiondescription</label>
-                     <div className="mt-2">
-                        <input
-                           id="bottomsectiondescription"
-                           name="bottomsectiondescription"
-                           type="text"
-                           autoComplete="text"
-                           required
-                           className="block w-56 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('bottomsectiondescription', { required: 'bottomsectiondescription is required' })}
-                        />
-                        {errors.bottomsectiondescription && <p className="text-red-500 text-sm">{errors.bottomsectiondescription.message}</p>}
-                     </div>
-                  </div>
+                 
 
                   <div className='p-2'>
                      <label htmlFor="bottomsectionimage" className="block text-sm font-medium leading-6 text-gray-900">Bottomsectionimage</label>
@@ -350,7 +361,10 @@ export default function Home() {
 
 
 
+               <div className='flex flex-row flex-wrap justify-center mt-2 w-2/3'>
 
+<RTE label="Bottomsectiondescription :" name="bottomsectiondescription" control={control} defaultValue={getValues("bottomsectiondescription")} />
+</div>
 
 
 

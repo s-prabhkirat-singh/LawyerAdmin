@@ -1,7 +1,8 @@
 import React from 'react'
-import {Editor } from '@tinymce/tinymce-react';
+
 import {Controller } from 'react-hook-form';
 
+import {Editor} from '@tinymce/tinymce-react'
 
 // editor is component : Kind of text Editor , 3rd party editor
 // In React Hook Form, Controller is a component that responsible for providing a way to work with controlled component (other ui component)

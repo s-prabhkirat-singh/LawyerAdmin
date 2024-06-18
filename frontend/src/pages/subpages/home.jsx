@@ -1,6 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import axios from 'axios';
+axios.defaults.baseURL = 'https://6t7m9ptx-8000.inc1.devtunnels.ms/';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 export default function Home() {
 
    const { register, handleSubmit, formState: { errors }, setValue } = useForm();
@@ -11,12 +13,59 @@ export default function Home() {
 
    const [homedata, sethomedata] = useState()
 
-
+   const create = async (data) => {
+      setloading(true);
+      data.id = 1;
+      console.log('Data to be sent:', data);
+    
+      try {
+        const response = await axios.post("/api/addHomeData", data);
+    
+        console.log('Response received:', response);
+    
+        // Assuming the data is in response.data.data
+        // setHomeData(response.data.data);
+    
+        seterror("");
+        setloading(false);
+    
+        // Uncomment and modify according to your response structure
+        // setValue('metatitle', response.data.data.metatitle);
+        // setValue('metadescription', response.data.data.metadescription);
+        // setValue('metatags', response.data.data.metatags);
+        // setValue('metaimage', response.data.data.metaimage);
+        // setValue('headertitle', response.data.data.headertitle);
+        // setValue('headerdescription', response.data.data.headerdescription);
+        // setValue('headerbuttonlabel', response.data.data.headerbuttonlabel);
+        // setValue('headerbuttonlink', response.data.data.headerbuttonlink);
+        // setValue('headerbgimage', response.data.data.headerbgimage);
+        // setValue('bottomsectiontitle', response.data.data.bottomsectiontitle);
+        // setValue('bottomsectiondescription', response.data.data.bottomsectiondescription);
+        // setValue('bottomsectionimage', response.data.data.bottomsectionimage);
+    
+      } catch (error) {
+        console.log('Error:', error);
+        seterror(error.message);
+        setloading(false);
+    
+        // Log error details for debugging
+        if (error.response) {
+          console.log('Response data:', error.response.data);
+          console.log('Response status:', error.response.status);
+          console.log('Response headers:', error.response.headers);
+        } else if (error.request) {
+          console.log('Request data:', error.request);
+        } else {
+          console.log('Error message:', error.message);
+        }
+      }
+    };
+    
    const fetchdata = async () => {
       setloading(true)
       try {
 
-         await axios.get("https://6t7m9ptx-8000.inc1.devtunnels.ms/api/getHomeData/1", {
+         await axios.get("http://localhost:8000/api/getHomeData/1", {
 
          })
 
@@ -68,54 +117,56 @@ export default function Home() {
 
 
 
-   const create = async (data) => {
+   // const create = async (data) => {
 
       
-      setloading(true)
-      console.log(data);
-      try {
+   //    setloading(true)
+   //    data.id=1;
+   //    console.log(data);
 
-         await axios.put("https://6t7m9ptx-8000.inc1.devtunnels.ms/api/addHomeData/1", { data})
+   //    try {
+            
+   //       await axios.post("http://localhost:8000/api/addHomeData", { data})
 
-            .then(response => {
+   //          .then(response => {
 
-               console.log(response)
-               //sethomedata(response.data.data)
-
-
-
-               seterror("")
-
-
-               /*setValue('metatitle', response.data.data.metatitle);
-               setValue('metadescription', response.data.data.metadescription);
-               setValue('metatags', response.data.data.metatags);
-               setValue('metaimage', response.data.data.metaimage);
-               setValue('headertitle', response.data.data.headertitle);
-               setValue('headerdescription', response.data.data.headerdescription);
-               setValue('headerbuttonlabel', response.data.data.headerbuttonlabel);
-               setValue('headerbuttonlink', response.data.data.headerbuttonlink);
-               setValue('headerbgimage', response.data.data.headerbgimage);
-               setValue('bottomsectiontitle', response.data.data.bottomsectiontitle);
-               setValue('bottomsectiondescription', response.data.data.bottomsectiondescription);
-               setValue('bottomsectionimage', response.data.data.bottomsectionimage);*/
+   //             console.log(response)
+   //             //sethomedata(response.data.data)
 
 
 
+   //             seterror("")
 
-               setloading(false)
 
-            }).catch(error => {
+   //             /*setValue('metatitle', response.data.data.metatitle);
+   //             setValue('metadescription', response.data.data.metadescription);
+   //             setValue('metatags', response.data.data.metatags);
+   //             setValue('metaimage', response.data.data.metaimage);
+   //             setValue('headertitle', response.data.data.headertitle);
+   //             setValue('headerdescription', response.data.data.headerdescription);
+   //             setValue('headerbuttonlabel', response.data.data.headerbuttonlabel);
+   //             setValue('headerbuttonlink', response.data.data.headerbuttonlink);
+   //             setValue('headerbgimage', response.data.data.headerbgimage);
+   //             setValue('bottomsectiontitle', response.data.data.bottomsectiontitle);
+   //             setValue('bottomsectiondescription', response.data.data.bottomsectiondescription);
+   //             setValue('bottomsectionimage', response.data.data.bottomsectionimage);*/
 
-               setloading(false)
-            })
 
-      } catch (error) {
-         console.log("error", error)
-         seterror(error.message)
-         setloading(false)
-      }
-   }
+
+
+   //             setloading(false)
+
+   //          }).catch(error => {
+
+   //             setloading(false)
+   //          })
+
+   //    } catch (error) {
+   //       console.log("error", error)
+   //       seterror(error.message)
+   //       setloading(false)
+   //    }
+   // }
 
 
    return (
@@ -191,7 +242,8 @@ export default function Home() {
                         <input
                            id="metaimage"
                            name="metaimage"
-                           type="text"
+                           type="file"
+                           accept='image/*'
                            autoComplete="text"
                            required
                            className="block w-56 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

@@ -4,6 +4,7 @@ const { Home } = require('../../models'); // Import the Page model
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const { header } = require('express-validator');
 
 // Multer Config Files
 const storage = multer.diskStorage({
@@ -30,77 +31,97 @@ const multiUpload = upload.fields([
   ]);
 
 
-// Route to update the Home page Data
+
 const updateData = async (req, res) => {
+    const { id, metatitle, metadescription, metatags, headertitle, headerdescription, headerbuttonlabel, headerbuttonlink, bottomsectiontitle, bottomsectiondescription, metaimage, headerbgimage, bottomsectionimage } = req.body;
+    const metaImg=metaimage;
+    const headerbgImg=headerbgimage;
+    const bottomsectionimg=bottomsectionimage
+    
+    if (req.files) {
+        const files = req.files;
+        const metaimage = files?.metaimage ? files.metaimage[0].filename : metaImg;
+        const headerbgimage = files?.headerbgimage ? files.headerbgimage[0].filename : headerbgImg;
+        const bottomsectionimage = files?.bottomsectionimage ? files.bottomsectionimage[0].filename : bottomsectionimg;
 
-    const { id } = req.body;
+        try {
+            if (metatitle && metadescription && metatags && headertitle && headerdescription && headerbuttonlabel && headerbuttonlink && bottomsectiontitle && bottomsectiondescription) {
+                const currentData = await Home.findOne({ where: { id }, attributes: ['metaimage', 'bottomsectionimage', 'headerbgimage'] });
 
-    const files = req.files;
-    const metaimage = files?.metaimage ? files.metaimage[0].filename : null;
-    const headerbgimage = files?.headerbgimage ? files.headerbgimage[0].filename : null;
-    const bottomsectionimage = files?.bottomsectionimage ? files.bottomsectionimage[0].filename : null;
-    const {
-        metatitle, metadescription, metatags,
-        headertitle, headerdescription, headerbuttonlabel, headerbuttonlink,
-        bottomsectiontitle, bottomsectiondescription
-    } = req.body;
-   
-
-    try {
-        if (metatitle && metadescription && metatags &&
-            headertitle && headerdescription && headerbuttonlabel && headerbuttonlink && headerbgimage &&
-            bottomsectiontitle && bottomsectiondescription) {
-
-            const currentData = await Home.findOne({ where: { id }, attributes: ['metaimage', 'bottomsectionimage','headerbgimage'] });
-
-            if (currentData) {
-                
-                if (currentData.metaimage && metaimage) {
-                    fs.unlink(`uploads/${currentData.metaimage}`, (err) => {
-                        if (err) console.log("Meta image file not present");
-                        else console.log('Meta image file deleted!');
-                    });
+                if (currentData) {
+                    if (currentData.metaimage!=metaImg && metaimage) {
+                        fs.unlink(`uploads/${currentData.metaimage}`, (err) => {
+                            if (err) console.log("Meta image file not present");
+                            else console.log('Meta image file deleted!');
+                        });
+                    }
+                    else{
+                        const {metaimage}=req.body;
+                    }
+                    if (currentData.headerbgimage!=headerbgImg && headerbgimage) {
+                        fs.unlink(`uploads/${currentData.headerbgimage}`, (err) => {
+                            if (err) console.log("Header background image file not present");
+                            else console.log('Header background image file deleted!');
+                        });
+                    }
+                    if (currentData.bottomsectionimage!=bottomsectionimg && bottomsectionimage) {
+                        fs.unlink(`uploads/${currentData.bottomsectionimage}`, (err) => {
+                            if (err) console.log("Bottom section image file not present");
+                            else console.log('Bottom section image file deleted!');
+                        });
+                    }
                 }
-                if (currentData.headerbgimage && headerbgimage) {
-                    fs.unlink(`uploads/${currentData.headerbgimage}`, (err) => {
-                        if (err) console.log("headerbgimagefile not present");
-                        else console.log('headerbgimage file deleted!');
-                    });
-                }
 
-                if (currentData.bottomsectionimage && bottomsectionimage) {
-                    fs.unlink(`uploads/${currentData.bottomsectionimage}`, (err) => {
-                        if (err) console.log("Bottom section image file not present");
-                        else console.log('Bottom section image file deleted!');
-                    });
-                }
+                const [home, created] = await Home.upsert({
+                    id,
+                    metatitle,
+                    metadescription,
+                    metatags,
+                    metaimage,
+                    headertitle,
+                    headerdescription,
+                    headerbuttonlabel,
+                    headerbuttonlink,
+                    headerbgimage,
+                    bottomsectiontitle,
+                    bottomsectiondescription,
+                    bottomsectionimage
+                });
+
+                return res.status(200).json({ msg: "Home data added/updated successfully" });
+            } else {
+                return res.status(400).json({ msg: "Invalid input data" });
             }
-
+        } catch (err) {
+            console.error("Database error:", err);
+            return res.status(500).send({ msg: "Database error" });
+        }
+    } else {
+        try {
             const [home, created] = await Home.upsert({
                 id,
                 metatitle,
                 metadescription,
                 metatags,
-                metaimage,
+             
                 headertitle,
                 headerdescription,
                 headerbuttonlabel,
                 headerbuttonlink,
-                headerbgimage,
+               
                 bottomsectiontitle,
                 bottomsectiondescription,
-                bottomsectionimage
+               
             });
 
-            return res.status(200).json({ msg: "Home data added/updated successfully" });
-        } else {
-            return res.status(400).json({ msg: "Invalid input data" });
+            return res.status(200).json({ msg: "Home data added/updated successfully", home });
+        } catch (err) {
+            console.error("Database error:", err);
+            return res.status(500).send({ msg: "Database error" });
         }
-    } catch (err) {
-        console.error("Database error:", err);
-        return res.status(500).send({ msg: "Database error" });
     }
 };
+
 const getHomeDataById = async (req, res) => {
     const id = req.params.id;
 

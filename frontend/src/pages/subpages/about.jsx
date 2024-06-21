@@ -20,16 +20,16 @@ export default function About() {
 
    const [metaimage, setMetaImage] = useState("")
    const [section1image, setsection1image] = useState("")
-   const [bottomsectionimage, setBottomSectionImage] = useState("")
+   const [headerbgimage, setheaderbgimage] = useState("")
 
    const [metaimageFile, setMetaImageFile] = useState(null)
    const [section1imageFile, setsection1imageFile] = useState(null)
-   const [bottomsectionimageFile, setBottomSectionImageFile] = useState(null)
+   const [headerbgimageFile, setheaderbgimageFile] = useState(null)
 
    const fetchdata = async () => {
       setLoading(true)
       try {
-         await axios.get("http://localhost:8000/api/getHomeData/1")
+         await axios.get("http://localhost:8000/api/getAboutData/2")
             .then(response => {
                const data = response.data.data;
                setHomadata(data);
@@ -50,7 +50,8 @@ export default function About() {
 
                setMetaImage('http://localhost:8000/uploads/'+data.metaimage);
                setsection1image('http://localhost:8000/uploads/'+data.section1image);
-               setBottomSectionImage('http://localhost:8000/uploads/'+data.bottomsectionimage);
+               setheaderbgimage('http://localhost:8000/uploads/'+data.headerbgimage);
+             
 
                setError("");
                setLoading(false);
@@ -85,7 +86,7 @@ export default function About() {
 
    const create = async (data) => {
       setLoading(true)
-      data.id = 1;
+      data.id = 2;
 
       try {
          console.log("data values", data)
@@ -94,7 +95,7 @@ export default function About() {
 
          metaimageFile == null ? "" : data.metaimage = metaimageFile;
          section1imageFile == null ? "" : data.section1image = section1imageFile;
-         bottomsectionimageFile == null ? "" : data.bottomsectionimage = bottomsectionimageFile;
+         headerbgimageFile == null ? "" : data.headerbgimage = headerbgimageFile;
 
 
          // formData.append('metaimage', metaimageFile);
@@ -123,7 +124,7 @@ export default function About() {
             },
          };
 
-         await axios.post("http://localhost:8000/api/addHomeData", formData, config).then((response) => {
+         await axios.post("http://localhost:8000/api/addAboutData", formData, config).then((response) => {
             setError("");
             setUpdate(!update);
             setLoading(false);
@@ -134,7 +135,7 @@ export default function About() {
 
             metaimageFile == null ? "" : setMetaImageFile(null);
             section1imageFile == null ? "" : setsection1imageFile(null);
-            bottomsectionimageFile == null ? "" : setBottomSectionImageFile(null);
+            headerbgimageFile == null ? "" : setheaderbgimageFile(null);
 
 
          })
@@ -246,7 +247,34 @@ export default function About() {
                         {errors.headertitle && <p className="text-red-500 text-sm">{errors.headertitle.message}</p>}
                      </div>
                   </div>
+                  <div className='p-2 mt-2'>
+                     <label htmlFor="headerbgimage" className="block text-lg font-medium leading-6 text-gray-900">Headerbgimage</label>
+                     <div className="mt-2">
+                        <input
+                           id="headerbgimage"
+                           name="headerbgimage"
+                           type="file"
+                           autoComplete="text"
+                           accept='image/*'
+                           onChangeCapture={(e) => handleFileChange(e, setheaderbgimageFile , setheaderbgimage)}
 
+
+                           className="block w-3/4 file:bg-gray-50 file:border-0
+    file:me-4
+    file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                           {...register('headerbgimage')}
+                        />
+                        {/* <button id="metaimage" name="metaimage" onClick={(e) => handleFileChange(e, setMetaImageFile)}>img</button> */}
+                        {errors.headerbgimage && <p className="text-red-500 text-sm">{errors.headerbgimage.message}</p>}
+                     </div>
+                     {headerbgimage && (
+                        <div>
+                           <label htmlFor="headerbgimage" className="block text-sm font-medium leading-6 text-gray-900">Current Header BG Image</label>
+                           <img src={`${headerbgimage}`} alt="headerbgimage" className="w-1/2 h-44" />
+                        </div>
+                     )}
+
+                  </div>
                   <div className='p-2 mt-2'>
                      <label htmlFor="headerdescription" className="block text-lg font-medium leading-6 text-gray-900">Header Description</label>
 
@@ -311,7 +339,7 @@ export default function About() {
                      </div>
                      {section1image && (
                         <div>
-                           <label htmlFor="section1image" className="block text-sm font-medium leading-6 text-gray-900">Current Header Background Image</label>
+                           <label htmlFor="section1image" className="block text-sm font-medium leading-6 text-gray-900">Current Section 1 Image</label>
                            <img src={`${section1image}`} alt="section1image" className="w-1/2 h-44" />
                         </div>
                      )}

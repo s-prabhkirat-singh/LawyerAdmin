@@ -6,7 +6,9 @@ import PrivateRoute from './utilites/PrivateRoute';
 const Landing = lazy(() => import('./pages/landing'));
 const SignIn = lazy(() => import('./pages/SignIn'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
+
 const Home = lazy(() => import('./pages/subpages/home'));
+const About = lazy(() => import('./pages/subpages/about'));
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
 
           <Route path="/dashboard" element={<Dashboard />}>
           <Route index element={<Home />} />
+          <Route  path ="/dashboard/about" element={<About />} />
+
          
           {/* Add more nested routes as needed */}
         </Route>

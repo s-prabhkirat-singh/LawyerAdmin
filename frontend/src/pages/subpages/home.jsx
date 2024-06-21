@@ -44,9 +44,9 @@ export default function Home() {
                setValue('bottomsectiondescription', data.bottomsectiondescription);
                setValue('bottomsectionimage', data.bottomsectionimage);
 
-               setMetaImage(data.metaimage);
-               setHeaderbgImage(data.headerbgimage);
-               setBottomSectionImage(data.bottomsectionimage);
+               setMetaImage('http://localhost:8000/uploads/'+data.metaimage);
+               setHeaderbgImage('http://localhost:8000/uploads/'+data.headerbgimage);
+               setBottomSectionImage('http://localhost:8000/uploads/'+data.bottomsectionimage);
 
                setError("");
                setLoading(false);
@@ -64,11 +64,18 @@ export default function Home() {
       fetchdata()
    }, [update])
 
-   const handleFileChange = (event, setFile) => {
+   const handleFileChange = (event, setFile , setimageurl) => {
 
       console.log(event)
-      setFile(event.target.files[0]);
-      console.log(metaimageFile)
+      console.log(event.target.files[0])
+
+      const file = event.target.files[0];
+      if (file) {
+         setFile(file);
+        const imageUrl = URL.createObjectURL(file);
+        setimageurl(imageUrl)
+      }
+
 
    }
 
@@ -200,7 +207,7 @@ export default function Home() {
                            type="file"
                            autoComplete="text"
                            accept='image/*'
-                           onChangeCapture={(e) => handleFileChange(e, setMetaImageFile)}
+                           onChangeCapture={(e) => handleFileChange(e, setMetaImageFile , setMetaImage)}
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0
@@ -214,9 +221,10 @@ export default function Home() {
                      {metaimage && (
                         <div>
                            <label htmlFor="metaimage" className="block text-sm font-medium leading-6 text-gray-900">Current Metaimage</label>
-                           <img src={`http://localhost:8000/uploads/${metaimage}`} alt="metaimage" className="w-1/2" />
+                           <img src={`${metaimage}`} alt="metaimage" className="w-1/2 h-44" />
                         </div>
                      )}
+
                   </div>
 
                   <div className='p-2 mt-2'>
@@ -288,7 +296,7 @@ export default function Home() {
                            autoComplete="text"
                            accept='image/*'
 
-                           onChangeCapture={(e) => handleFileChange(e, setHeaderbgImageFile)}
+                           onChangeCapture={(e) => handleFileChange(e, setHeaderbgImageFile , setHeaderbgImage)}
                            className="block file:bg-gray-50 file:border-0
     file:me-4
     file:py-3 file:px-4 w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -300,7 +308,7 @@ export default function Home() {
                      {headerbgimage && (
                         <div>
                            <label htmlFor="headerbgimage" className="block text-sm font-medium leading-6 text-gray-900">Current Header Background Image</label>
-                           <img src={`http://localhost:8000/uploads/${headerbgimage}`} alt="headerbgimage" className="w-1/2" />
+                           <img src={`${headerbgimage}`} alt="headerbgimage" className="w-1/2 h-44" />
                         </div>
                      )}
                   </div>
@@ -350,8 +358,8 @@ export default function Home() {
                            autoComplete="text"
                            accept='image/*'
 
-                           onChangeCapture={(e) => handleFileChange(e, setBottomSectionImageFile)}
-                           className="block w-3/4  file:bg-gray-50 file:border-0
+                           onChangeCapture={(e) => handleFileChange(e, setBottomSectionImageFile , setBottomSectionImage)}
+                           className="block w-3/4 h-40 file:bg-gray-50 file:border-0
     file:me-4
     file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('bottomsectionimage')}
@@ -362,7 +370,7 @@ export default function Home() {
                      {bottomsectionimage && (
                         <div>
                            <label htmlFor="bottomsectionimage" className="block text-sm font-medium leading-6 text-gray-900">Current Bottom Section Image</label>
-                           <img src={`http://localhost:8000/uploads/${bottomsectionimage}`} alt="bottomsectionimage" className="w-1/2 mb-16" />
+                           <img src={`${bottomsectionimage}`} alt="bottomsectionimage" className="w-1/2 h-44 mb-16" />
                         </div>
                      )}
                   </div>

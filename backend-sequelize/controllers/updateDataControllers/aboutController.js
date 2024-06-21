@@ -139,7 +139,7 @@ const updateAboutData = async (req, res) => {
 };
 
     const getAboutDataById = async (req, res) => {
-        const { id } = req.body;
+        const id=req.params.id;
       
         try {
           const about = await About.findOne({ where: { id } });

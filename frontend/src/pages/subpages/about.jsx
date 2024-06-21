@@ -29,7 +29,7 @@ export default function About() {
    const fetchdata = async () => {
       setLoading(true)
       try {
-         await axios.get("http://localhost:8000/api/getHomeData/1")
+         await axios.get("http://localhost:8000/api/getAboutData/2")
             .then(response => {
                const data = response.data.data;
                setHomadata(data);
@@ -85,7 +85,7 @@ export default function About() {
 
    const create = async (data) => {
       setLoading(true)
-      data.id = 1;
+      data.id = 2;
 
       try {
          console.log("data values", data)
@@ -123,7 +123,7 @@ export default function About() {
             },
          };
 
-         await axios.post("http://localhost:8000/api/addHomeData", formData, config).then((response) => {
+         await axios.post("http://localhost:8000/api/addAboutData", formData, config).then((response) => {
             setError("");
             setUpdate(!update);
             setLoading(false);

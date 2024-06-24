@@ -1,8 +1,12 @@
+// Example route using the Page model
 
+
+const { Resource } = require('../../models'); 
+// Import the Page model
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const {Services}= require('../../models')
+
 // Multer Config Files
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -23,13 +27,13 @@ const upload = multer({ storage: storage });
 
 const multiUpload = upload.fields([
   { name: 'metaimage', maxCount: 1 },
-  { name: 'headerbgimage', maxCount: 1 },
-  { name: 'section1image', maxCount: 1 }
+  { name: 'headerbgimage', maxCount: 1 }
+  
 ]);
 
 
 // Create a new page
-const updateServicesData = async (req, res) => {
+const updateResourceData = async (req, res) => {
   const {
       id,
       metatitle,
@@ -39,29 +43,23 @@ const updateServicesData = async (req, res) => {
       headerdescription,
       headerbuttonlabel,
       headerbuttonlink,
-      section1title,
-      section1description,
-      section1buttonlabel,
-      section1buttonlink,
-      section1yearsofexperience,
-      section2title,
-      section2description
+      title,
+      content
   } = req.body;
   console.log(id)
 
   const metaImg = req.body.metaimage;
   const headerbgImg = req.body.headerbgimage;
-  const section1Img = req.body.section1image;
+ 
 
   if (req.files) {
       const files = req.files;
       const metaimage = files?.metaimage ? files.metaimage[0].filename : metaImg;
       const headerbgimage = files?.headerbgimage ? files.headerbgimage[0].filename : headerbgImg;
-      const section1image = files?.section1image ? files.section1image[0].filename : section1Img;
-
+     
       try {
-          if (headerbuttonlabel&& headerbuttonlink&&metatitle && metadescription && metatags && headertitle && headerdescription && section1title && section1description && section1buttonlabel && section1buttonlink && section1yearsofexperience && section2title && section2description) {
-              const currentData = await Services.findOne({ where: { id }, attributes: ['metaimage', 'headerbgimage', 'section1image'] });
+          if (metatitle && metadescription && metatags && headertitle && headerdescription  && headerbuttonlabel && headerbuttonlink && title &&content ) {
+              const currentData = await Resource.findOne({ where: { id }, attributes: ['metaimage', 'headerbgimage'] });
 
               if (currentData) {
                   if (currentData.metaimage !== metaImg && metaimage) {
@@ -76,15 +74,10 @@ const updateServicesData = async (req, res) => {
                           else console.log('Header background image file deleted!');
                       });
                   }
-                  if (currentData.section1image !== section1Img && section1image) {
-                      fs.unlink(`uploads/${currentData.section1image}`, (err) => {
-                          if (err) console.log("Section 1 image file not present");
-                          else console.log('Section 1 image file deleted!');
-                      });
-                  }
+                
               }
 
-              const [services, created] = await Services.upsert({
+              const [about, created] = await Resource.upsert({
                   id,
                   metatitle,
                   metadescription,
@@ -93,19 +86,15 @@ const updateServicesData = async (req, res) => {
                   headertitle,
                   headerdescription,
                   headerbgimage,
+            
                   headerbuttonlabel,
                   headerbuttonlink,
-                  section1title,
-                  section1description,
-                  section1image,
-                  section1buttonlabel,
-                  section1buttonlink,
-                  section1yearsofexperience,
-                  section2title,
-                  section2description
+                  title,
+                  content
+            
               });
 
-              return res.status(200).json({ msg: "Services data added/updated successfully" });
+              return res.status(200).json({ msg: "Resources data added/updated successfully" });
           } else {
               return res.status(400).json({ msg: "Invalid input data" });
           }
@@ -115,25 +104,23 @@ const updateServicesData = async (req, res) => {
       }
   } else {
       try {
-          const [services, created] = await Services.upsert({
-              id,
-              metatitle,
-              metadescription,
-              metatags,
-              headertitle,
-              headerdescription,
-              headerbuttonlabel,
-              headerbuttonlink,
-              section1title,
-              section1description,
-              section1buttonlabel,
-              section1buttonlink,
-              section1yearsofexperience,
-              section2title,
-              section2description
+          const [about, created] = await Resource.upsert({
+            id,
+            metatitle,
+            metadescription,
+            metatags,
+            metaImg,
+            headertitle,
+            headerdescription,
+            headerbgImg,
+            headerbuttonlabel,
+            headerbuttonlink,
+            title,
+            content
+      
           });
 
-          return res.status(200).json({ msg: "Services data added/updated successfully", Services });
+          return res.status(200).json({ msg: "About data added/updated successfully", about });
       } catch (err) {
           console.error("Database error:", err);
           return res.status(500).send({ msg: "Database error" });
@@ -141,17 +128,17 @@ const updateServicesData = async (req, res) => {
   }
 };
 
-    const getServicesDataById = async (req, res) => {
+    const getResourceDataById = async (req, res) => {
         const id=req.params.id;
       
         try {
-          const Services_All = await Services.findOne({ where: { id } });
+          const about = await Resource.findOne({ where: { id } });
       
-          if (!Services_All) {
-            return res.status(404).json({ msg: "Services data not found" });
+          if (!about) {
+            return res.status(404).json({ msg: "About data not found" });
           }
       
-          return res.status(200).json({ data: Services_All });
+          return res.status(200).json({ data: about });
         } catch (err) {
           console.error("Database error:", err);
           return res.status(500).send({ msg: "Database error" });
@@ -159,4 +146,5 @@ const updateServicesData = async (req, res) => {
       };
 
 
-module.exports = {updateServicesData, getServicesDataById,upload,multiUpload };
+
+module.exports = {updateResourceData,getResourceDataById,upload,multiUpload };

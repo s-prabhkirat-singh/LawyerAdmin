@@ -208,6 +208,10 @@ const getCardList = async (req, res) => {
     const icon = files ? files.filename : earlierIcon;
     console.log(icon);
     const currentData = await AboutUsSectiontwoCards.findOne({ where: { id :id}, attributes: ['icon'] });
+    console.log(currentData)
+    if(currentData){
+
+   
 
     if(currentData.icon!=earlierIcon){
         fs.unlink(`uploads/${currentData.icon}`, (err) => {
@@ -216,6 +220,7 @@ const getCardList = async (req, res) => {
         });
 
     }
+    
     try {
    
 
@@ -226,7 +231,15 @@ const getCardList = async (req, res) => {
         console.error("Database error:", err);
         return res.status(500).send({ msg: "Database error" });
       }
+    }
+    else{
+        fs.unlink(`uploads/${icon}`, (err) => {
+            if (err) console.log("icon file not present");
+            else console.log('Icon file deleted!');
+        });
 
+        return res.status(400).send({msg:"Card with specified id not present"})
+    }
 
   }
   const deleteCard= async(req,res)=>{

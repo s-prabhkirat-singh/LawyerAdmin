@@ -9,6 +9,7 @@ const Dashboard = lazy(() => import('./pages/dashboard'));
 
 const Home = lazy(() => import('./pages/subpages/home'));
 const About = lazy(() => import('./pages/subpages/about'));
+const AboutUsCards = lazy(() => import('./pages/subpages/aboutuscards'));
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}>
           <Route index element={<Home />} />
           <Route  path ="/dashboard/about" element={<About />} />
-
+          <Route  path ="/dashboard/aboutuscards" element={<AboutUsCards />} />
          
           {/* Add more nested routes as needed */}
         </Route>

@@ -18,10 +18,13 @@ export default function About() {
    const [update, setUpdate] = useState(false)
    const [homedata, setHomadata] = useState()
 
+   // setting the url to show the image
    const [metaimage, setMetaImage] = useState("")
    const [section1image, setsection1image] = useState("")
    const [headerbgimage, setheaderbgimage] = useState("")
 
+
+   // we will check about the if someone changed the file if yes then it will be updated and we will update the data.metaimagefile
    const [metaimageFile, setMetaImageFile] = useState(null)
    const [section1imageFile, setsection1imageFile] = useState(null)
    const [headerbgimageFile, setheaderbgimageFile] = useState(null)
@@ -47,7 +50,9 @@ export default function About() {
                setValue('section2description', data.section2description);
                setValue(`section2title`,data.section2title)
                setValue(`section1buttonlink`,data.section1buttonlink)
+               setValue('headerbgimage',data.headerbgimage)
 
+               // setting the url to show the image
                setMetaImage('http://localhost:8000/uploads/'+data.metaimage);
                setsection1image('http://localhost:8000/uploads/'+data.section1image);
                setheaderbgimage('http://localhost:8000/uploads/'+data.headerbgimage);

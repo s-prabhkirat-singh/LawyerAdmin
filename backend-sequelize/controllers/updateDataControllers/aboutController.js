@@ -1,10 +1,12 @@
 // Example route using the Page model
 
 
-const { About } = require('../../models'); // Import the Page model
+const { About } = require('../../models'); 
+const {AboutUsSectiontwoCards}=require('../../models');// Import the Page model
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const { where } = require('sequelize');
 
 // Multer Config Files
 const storage = multer.diskStorage({
@@ -155,5 +157,135 @@ const updateAboutData = async (req, res) => {
         }
       };
 
+// Controllers for cards of section 2 
+const getCardList = async (req, res) => {
+   
+  
+    try {
+      const cards = await AboutUsSectiontwoCards.findAll();
+  
+      if (!cards) {
+        return res.status(404).json({ msg: "Cards not found" });
+      }
+  
+      return res.status(200).json({ data: cards });
+    } catch (err) {
+      console.error("Database error:", err);
+      return res.status(500).send({ msg: "Database error" });
+    }
+  };
+  const addCard= async(req,res)=>{
+    const{id,about_id,count,text}=req.body; 
+    const files = req.file;
+    
 
-module.exports = {updateAboutData, getAboutDataById,upload,multiUpload };
+    
+    const icon = files ? files.filename : 0;
+   
+  
+
+    try {
+   
+
+        await AboutUsSectiontwoCards.create({ id,about_id,count,icon,text });
+    
+        return res.status(200).json({ msg: "Card added successfully" });
+      } catch (err) {
+        console.error("Database error:", err);
+        return res.status(500).send({ msg: "Database error" });
+      }
+
+
+  }
+  const updateCardData= async(req,res)=>{
+    
+    const{id,about_id,count,text}=req.body;
+    const files = req.file;
+    const earlierIcon=req.body.icon;
+    
+
+    
+    const icon = files ? files.filename : earlierIcon;
+    console.log(icon);
+    const currentData = await AboutUsSectiontwoCards.findOne({ where: { id :id}, attributes: ['icon'] });
+    console.log(currentData)
+    if(currentData){
+
+   
+
+    if(currentData.icon!=earlierIcon){
+        fs.unlink(`uploads/${currentData.icon}`, (err) => {
+            if (err) console.log("icon file not present");
+            else console.log('Icon file deleted!');
+        });
+
+    }
+    
+    try {
+   
+
+        await AboutUsSectiontwoCards.upsert({ id,about_id,count,icon,text });
+    
+        return res.status(200).json({ msg: "Card added successfully" });
+      } catch (err) {
+        console.error("Database error:", err);
+        return res.status(500).send({ msg: "Database error" });
+      }
+    }
+    else{
+        fs.unlink(`uploads/${icon}`, (err) => {
+            if (err) console.log("icon file not present");
+            else console.log('Icon file deleted!');
+        });
+
+        return res.status(400).send({msg:"Card with specified id not present"})
+    }
+
+  }
+  const deleteCard= async(req,res)=>{
+    
+    const {id}=req.params;
+    console.log(id)
+
+    try {
+   
+        const currentData = await AboutUsSectiontwoCards.findOne({ where: { id :id}, attributes: ['icon'] });
+        console.log(currentData)
+        if(currentData){
+            fs.unlink(`uploads/${currentData.icon}`, (err) => {
+                if (err) console.log("icon file not present");
+                else console.log('Icon file deleted!');
+            });
+            const result=await AboutUsSectiontwoCards.destroy({where:{id:id}});
+            if(result){
+            
+            return res.status(200).json({ msg: "Card Deleted successfully" });
+            }
+            else{
+                return res.status(400).json({msg:"Card Not Present"})
+
+
+            }
+        }
+
+       
+        
+
+           
+        
+        else{
+            return res.status(400).json({msg:"error deleting file"})
+          
+        }
+       
+    
+      } catch (err) {
+        console.error("Database error:", err);
+        return res.status(500).send({ msg: "Database error" });
+      }
+
+
+  }
+
+
+module.exports = {updateAboutData, getAboutDataById,upload,multiUpload ,getCardList,addCard,updateCardData,deleteCard};

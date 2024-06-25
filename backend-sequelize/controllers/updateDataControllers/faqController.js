@@ -46,7 +46,7 @@ const updateFaqData = async (req, res) => {
       headerbuttonlink,
       title,
       description,
-      content
+    
   } = req.body;
   console.log(id)
 
@@ -62,7 +62,7 @@ const updateFaqData = async (req, res) => {
       const image = files?.image ? files.image[0].filename : Img;
      
       try {
-          if (description&&metatitle && metadescription && metatags && headertitle && headerdescription  && headerbuttonlabel && headerbuttonlink && title &&content ) {
+          if (description&&metatitle && metadescription && metatags && headertitle && headerdescription  && headerbuttonlabel && headerbuttonlink && title ) {
               const currentData = await Faq.findOne({ where: { id:id }, attributes: ['metaimage', 'headerbgimage','image'] });
 
               if (currentData) {
@@ -101,9 +101,8 @@ const updateFaqData = async (req, res) => {
             
                   headerbuttonlabel,
                   headerbuttonlink,
-                  title,
-                  content
-            
+                  title
+                              
               });
 
               return res.status(200).json({ msg: "Faqs data added/updated successfully" });
@@ -130,7 +129,7 @@ const updateFaqData = async (req, res) => {
             headerbuttonlabel,
             headerbuttonlink,
             title,
-            content
+       
       
           });
 

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const  Faq= sequelize.define('YourModelName', {
+    const  Faq= sequelize.define('Faq', {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true
       }
     }, {
-      tableName: 'YourTableName', // Match the existing MySQL table name
+      tableName: 'faqs', // Match the existing MySQL table name
       timestamps: false // Disable timestamps if the table doesn't have createdAt and updatedAt columns
     });
   

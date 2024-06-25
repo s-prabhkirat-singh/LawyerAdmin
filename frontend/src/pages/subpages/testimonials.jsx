@@ -42,7 +42,7 @@ export default function Testimonials() {
                setcardata(data);
                setcardcount(data.length)
 
-               const urls = data.map(item => `http://localhost:8000/uploads/${item.icon}`);
+               const urls = data.map(item => `http://localhost:8000/uploads/${item.image}`);
                setimageurl(urls);
 
                //seticon('http://localhost:8000/uploads/' + data.icon);
@@ -217,13 +217,14 @@ export default function Testimonials() {
 
    const updatecard = async (index, id) => {
 
-      const data = getValues()
+      var data = getValues()
 
       console.log("data values", data)
 
       const name = data[`name-${index}`]
       const position = data[`position-${index}`]
       const image = data[`image-${index}`][0]
+      console.log()
       const review_text = data[`review_text-${index}`][0]
 
       console.log("clicked", name);
@@ -235,20 +236,35 @@ export default function Testimonials() {
 
       
 
-      if (count && text ) {
+      if (count && position ) {
+         if(image){
+
+         
 
 
          
 
-         const data = {
+          data = {
+            id:id,
          
             name: count,
-            position: text,
+            position: position,
             image: image,
             review_text:review_text
    
+         }}
+         else{
+            
+          data = {
+            id:id,
+         
+            name: count,
+            position: position,
+          
+            review_text:review_text
+   
          }
-
+         }
 
          setLoading(true)
          try {
@@ -358,7 +374,7 @@ export default function Testimonials() {
          const form = {
             
             name: count,
-            position: text,
+            position: position,
             image: image,
             review_text:review_text
 
@@ -384,7 +400,7 @@ export default function Testimonials() {
          };
 
 
-         /*await axios.post("http://localhost:8000/api/addCardData", formData, config).then((response) => {
+         await axios.post("http://localhost:8000/api/addTestimonial", formData, config).then((response) => {
                setError("");
                setUpdate(!update);
                setLoading(false);
@@ -392,7 +408,7 @@ export default function Testimonials() {
             }).catch(error => {
                setError(error.message);
                setLoading(false);
-            })*/
+            })
 
 
 

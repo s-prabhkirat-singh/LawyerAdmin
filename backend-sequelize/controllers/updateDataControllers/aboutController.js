@@ -201,11 +201,11 @@ const getCardList = async (req, res) => {
     
     const{id,about_id,count,text}=req.body;
     const files = req.file;
-    const earlierIcon=req.body.icon;
+   
     
 
     
-    const icon = files ? files.filename : earlierIcon;
+    var icon = files ? files.filename : 0;
     console.log(icon);
     const currentData = await AboutUsSectiontwoCards.findOne({ where: { id :id}, attributes: ['icon'] });
     console.log(currentData)
@@ -213,12 +213,15 @@ const getCardList = async (req, res) => {
 
    
 
-    if(currentData.icon!=earlierIcon){
+    if(icon){
         fs.unlink(`uploads/${currentData.icon}`, (err) => {
             if (err) console.log("icon file not present");
             else console.log('Icon file deleted!');
         });
 
+    }
+    else{
+      icon=currentData.icon
     }
     
     try {

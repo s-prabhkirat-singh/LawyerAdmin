@@ -11,6 +11,7 @@ const aboutRouter = require('./routes/updateDataRoutes/aboutRoutes');
 const serviceRouter = require('./routes/updateDataRoutes/serviceRoutes');
 const ResourceRouter= require('./routes/updateDataRoutes/resourceRoutes')
 const FaqRouter= require('./routes/updateDataRoutes/faqRoutes')
+const testimonialRouter=require('./routes/updateDataRoutes/testimonialRoutes')
 // hello this is testing
 
 
@@ -26,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
-app.use("/api", userRouter,HomeRouter,aboutRouter,serviceRouter,ResourceRouter,FaqRouter);
+app.use("/api", userRouter,HomeRouter,aboutRouter,serviceRouter,ResourceRouter,testimonialRouter,FaqRouter);
 app.get("/",(req,res)=>{
   res.send("hellfffffo")
 })

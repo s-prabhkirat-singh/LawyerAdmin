@@ -4,12 +4,12 @@ import axios from 'axios';
 import RTE from '../../components/rte';
 
 
-export default function Services() {
+export default function Faq() {
 
    const { register, handleSubmit, formState: { errors }, setValue, control, getValues } = useForm({
       defaultValues: {
          headerdescription: "",
-         section1description: ""
+        
       }
    });
 
@@ -20,19 +20,20 @@ export default function Services() {
 
    // setting the url to show the image
    const [metaimage, setMetaImage] = useState("")
-   const [section1image, setsection1image] = useState("")
+  
    const [headerbgimage, setheaderbgimage] = useState("")
+   const [image, setImage] = useState("")
 
 
-   // we will check about the if someone changed the file if yes then it will be updated and we will update the data.metaimagefile
+   // we will check Faq the if someone changed the file if yes then it will be updated and we will update the data.metaimagefile
    const [metaimageFile, setMetaImageFile] = useState(null)
-   const [section1imageFile, setsection1imageFile] = useState(null)
    const [headerbgimageFile, setheaderbgimageFile] = useState(null)
+   const [imageFile, setimageFile] = useState(null)
 
    const fetchdata = async () => {
       setLoading(true)
       try {
-         await axios.get("http://localhost:8000/api/getServiceData/4")
+         await axios.get("http://localhost:8000/api/getFaqData/2")
             .then(response => {
                const data = response.data.data;
                setHomadata(data);
@@ -42,34 +43,17 @@ export default function Services() {
                setValue('metaimage', data.metaimage);
                setValue('headertitle', data.headertitle);
                setValue('headerdescription', data.headerdescription);
-
-
                setValue('headerbuttonlink', data.headerbuttonlink);
                setValue('headerbuttonlabel', data.headerbuttonlabel);
-
-               setValue('section1title', data.section1title);
-               setValue('section1image', data.section1image);
-               setValue('section1buttonlabel', data.section1buttonlabel);
-               setValue('section1description', data.section1description);
-               setValue(`section1buttonlink`,data.section1buttonlink)
-
-               
-               setValue(`section2title`,data.section2title)
-               setValue('section2description', data.section2description);
-               
-
-
+               setValue('title', data.title);
+               setValue('description', data.description);
                setValue('headerbgimage',data.headerbgimage)
-
-               setValue('section1yearsofexperience', data.section1yearsofexperience);
-
-               setValue('name', data.name);
-               setValue('slug', data.slug);
+               setValue('image',data.image)
 
                // setting the url to show the image
                setMetaImage('http://localhost:8000/uploads/'+data.metaimage);
-               setsection1image('http://localhost:8000/uploads/'+data.section1image);
                setheaderbgimage('http://localhost:8000/uploads/'+data.headerbgimage);
+               setImage('http://localhost:8000/uploads/'+data.image);
              
 
                setError("");
@@ -105,7 +89,7 @@ export default function Services() {
 
    const create = async (data) => {
       setLoading(true)
-      data.id = 4;
+      data.id = 2;
 
       try {
          console.log("data values", data)
@@ -113,13 +97,8 @@ export default function Services() {
 
 
          metaimageFile == null ? "" : data.metaimage = metaimageFile;
-         section1imageFile == null ? "" : data.section1image = section1imageFile;
          headerbgimageFile == null ? "" : data.headerbgimage = headerbgimageFile;
-
-
-         // formData.append('metaimage', metaimageFile);
-         // formData.append('section1image', section1imageFile);
-         // formData.append('bottomsectionimage', bottomsectionimageFile);
+         imageFile == null ? "" : data.image = imageFile;
 
          for (const [key, value] of Object.entries(data)) {
 
@@ -132,18 +111,13 @@ export default function Services() {
 
 
 
-
-
-
-
-
          const config = {
             headers: {
-               'content-type': 'multipart/form-data',
+               'description-type': 'multipart/form-data',
             },
          };
 
-         await axios.post("http://localhost:8000/api/addServicesData", formData, config).then((response) => {
+         await axios.post("http://localhost:8000/api/addFaqData", formData, config).then((response) => {
             setError("");
             setUpdate(!update);
             setLoading(false);
@@ -153,8 +127,8 @@ export default function Services() {
          }).finally(() => {
 
             metaimageFile == null ? "" : setMetaImageFile(null);
-            section1imageFile == null ? "" : setsection1imageFile(null);
             headerbgimageFile == null ? "" : setheaderbgimageFile(null);
+            imageFile == null ? "" : imageFile(null);
 
 
          })
@@ -168,9 +142,9 @@ export default function Services() {
 
    return (
       <div className="w-full">
-         <h1 className='text-gray-800 text-2xl font-semibold text-start p-3'>Service Section</h1>
+         <h1 className='text-gray-800 text-2xl font-semibold text-start p-3'>Faq Section</h1>
          <div className='p-5'>
-            <form className='content-center' onSubmit={handleSubmit(create)}>
+            <form className='description-center' onSubmit={handleSubmit(create)}>
                <div className="flex flex-col flex-wrap justify-center">
                   <div className='p-2 mt-2'>
                      <label htmlFor="title" className="block text-lg font-medium leading-6 text-gray-900">Title</label>
@@ -306,90 +280,7 @@ export default function Services() {
 
                <div className="flex flex-col flex-wrap justify-center mt-2">
                   <div className='p-2 mt-2'>
-                     <label htmlFor="headerbuttonlink" className="block text-lg font-medium leading-6 text-gray-900">Headerbuttonlink</label>
-                     <div className="mt-2">
-                        <input
-                           id="headerbuttonlink"
-                           name="headerbuttonlink"
-                           type="text"
-                           autoComplete="text"
-                           required
-                           className="block w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('headerbuttonlink', { required: 'headerbuttonlink is required' })}
-                        />
-                        {errors.headerbuttonlink && <p className="text-red-500 text-sm">{errors.headerbuttonlink.message}</p>}
-                     </div>
-                  </div>
-
-                  <div className='p-2 mt-2'>
-                     <label htmlFor="section1buttonlabel" className="block text-lg font-medium leading-6 text-gray-900">Section 1 Button Label</label>
-                     <div className="mt-2">
-                        <input
-                           id="section1buttonlabel"
-                           name="section1buttonlabel"
-                           type="text"
-                           autoComplete="text"
-                           required
-                           className="block w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('section1buttonlabel', { required: 'section1buttonlabel is required' })}
-                        />
-                        {errors.section1buttonlabel && <p className="text-red-500 text-sm">{errors.headerbuttonlabel.message}</p>}
-                     </div>
-                  </div>
-
-                  <div className='p-2 mt-2'>
-                     <label htmlFor="section1image" className="block text-lg font-medium leading-6 text-gray-900">Section 1 Image</label>
-                     <div className="mt-2">
-                        <input
-                           id="section1image"
-                           name="section1image"
-                           type="file"
-                           autoComplete="text"
-                           accept='image/*'
-
-                           onChangeCapture={(e) => handleFileChange(e, setsection1imageFile , setsection1image)}
-                           className="block file:bg-gray-50 file:border-0
-    file:me-4
-    file:py-3 file:px-4 w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('section1image')}
-                        />
-
-                        {errors.section1image && <p className="text-red-500 text-sm">{errors.section1image.message}</p>}
-                     </div>
-                     {section1image && (
-                        <div>
-                           <label htmlFor="section1image" className="block text-sm font-medium leading-6 text-gray-900">Current Section 1 Image</label>
-                           <img src={`${section1image}`} alt="section1image" className="w-1/2 h-44" />
-                        </div>
-                     )}
-                  </div>
-               </div>
-
-
-
-
-
-               <div className="flex flex-col flex-wrap justify-center mt-2 mb-2">
-
-               <div className='p-2 mt-2'>
-                     <label htmlFor="section1buttonlink" className="block text-sm font-medium leading-6 text-gray-900">Section 1 Button Link</label>
-                     <div className="mt-2">
-                        <input
-                           id="section1buttonlink"
-                           name="section1buttonlink"
-                           type="text"
-                           autoComplete="text"
-                           required
-                           className="block w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('section1buttonlink', { required: 'section1buttonlink is required' })}
-                        />
-                        {errors.section1buttonlink && <p className="text-red-500 text-sm">{errors.section1buttonlink.message}</p>}
-                     </div>
-                  </div>
-
-
-                  <div className='p-2 mt-2'>
-                     <label htmlFor="headerbuttonlabel" className="block text-sm font-medium leading-6 text-gray-900">Headerbuttonlabel</label>
+                     <label htmlFor="headerbuttonlabel" className="block text-lg font-medium leading-6 text-gray-900">headerbuttonlabel</label>
                      <div className="mt-2">
                         <input
                            id="headerbuttonlabel"
@@ -405,88 +296,97 @@ export default function Services() {
                   </div>
 
                   <div className='p-2 mt-2'>
-                     <label htmlFor="section1description" className="block text-lg font-medium leading-6 text-gray-900">Section 1 Description</label>
-                     <div className='flex flex-row flex-wrap justify-center mt-2 w-3/4'>
-
-                        <RTE label="" name="section1description" control={control} defaultValue={getValues("section1description")} />
-                     </div>
-
-                  </div>
-
-                  <div className='p-2 mt-2'>
-                     <label htmlFor="section2title" className="block text-lg font-medium leading-6 text-gray-900">Section 2 Title</label>
+                     <label htmlFor="headerbuttonlink" className="block text-lg font-medium leading-6 text-gray-900">Header Button Link</label>
                      <div className="mt-2">
                         <input
-                           id="section2title"
-                           name="section2title"
+                           id="headerbuttonlink"
+                           name="headerbuttonlink"
                            type="text"
                            autoComplete="text"
                            required
                            className="block w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('section2title', { required: 'section2title is required' })}
+                           {...register('headerbuttonlink', { required: 'headerbuttonlink is required' })}
                         />
-                        {errors.section2title && <p className="text-red-500 text-sm">{errors.section2title.message}</p>}
+                        {errors.headerbuttonlink && <p className="text-red-500 text-sm">{errors.headerbuttonlink.message}</p>}
                      </div>
                   </div>
 
-                  <div className='p-2 mt-2'>
-                     <label htmlFor="section2description" className="block text-lg font-medium leading-6 text-gray-900">Section 2 Description</label>
+                
+               </div>
 
-                     <div className='flex flex-row flex-wrap justify-center mt-2 w-3/4'>
-                        <RTE label="section2description :" name="section2description" control={control} defaultValue={getValues("section2description")} />
-                     </div>
 
-                  </div>
 
-                  <div className='p-2 mt-2'>
-                     <label htmlFor="section1yearsofexperience" className="block text-sm font-medium leading-6 text-gray-900">Section 1 Years of Experience</label>
+
+
+               <div className="flex flex-col flex-wrap justify-center mt-2 mb-2">
+
+               <div className='p-2 mt-2'>
+                     <label htmlFor="title" className="block text-sm font-medium leading-6 text-gray-900">Title</label>
                      <div className="mt-2">
                         <input
-                           id="section1yearsofexperience"
-                           name="section1yearsofexperience"
+                           id="title"
+                           name="title"
                            type="text"
                            autoComplete="text"
                            required
                            className="block w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('section1yearsofexperience', { required: 'section1yearsofexperience is required' })}
+                           {...register('title', { required: 'title is required' })}
                         />
-                        {errors.section1yearsofexperience && <p className="text-red-500 text-sm">{errors.section1yearsofexperience.message}</p>}
+                        {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
                      </div>
                   </div>
 
+
                   <div className='p-2 mt-2'>
-                     <label htmlFor="section1yearsofexperience" className="block text-sm font-medium leading-6 text-gray-900">Name</label>
+                     <label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">description</label>
                      <div className="mt-2">
                         <input
-                           id="name"
-                           name="name"
+                           id="description"
+                           name="description"
                            type="text"
                            autoComplete="text"
                            required
                            className="block w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('name', { required: 'name is required' })}
+                           {...register('description', { required: 'description is required' })}
                         />
-                        {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                        {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
                      </div>
                   </div>
-
                   <div className='p-2 mt-2'>
-                     <label htmlFor="section1yearsofexperience" className="block text-sm font-medium leading-6 text-gray-900">Slug</label>
+                     <label htmlFor="image" className="block text-lg font-medium leading-6 text-gray-900">image</label>
                      <div className="mt-2">
                         <input
-                           id="slug"
-                           name="slug"
-                           type="text"
+                           id="image"
+                           name="image"
+                           type="file"
                            autoComplete="text"
-                           required
-                           className="block w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                           {...register('slug', { required: 'slug is required' })}
+                           accept='image/*'
+                           onChangeCapture={(e) => handleFileChange(e, setimageFile , setimage)}
+
+
+                           className="block w-3/4 file:bg-gray-50 file:border-0
+    file:me-4
+    file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                           {...register('image')}
                         />
-                        {errors.slug && <p className="text-red-500 text-sm">{errors.slug.message}</p>}
+                        {/* <button id="metaimage" name="metaimage" onClick={(e) => handleFileChange(e, setMetaImageFile)}>img</button> */}
+                        {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
                      </div>
+                     {image && (
+                        <div>
+                           <label htmlFor="image" className="block text-sm font-medium leading-6 text-gray-900">Current Image</label>
+                           <img src={`${image}`} alt="image" className="w-1/2 h-44" />
+                        </div>
+                     )}
+
                   </div>
 
+                 
 
+
+                  
+
+                  
                </div>
 
                <div className="flex flex-col flex-wrap justify-center ">

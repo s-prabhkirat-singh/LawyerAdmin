@@ -15,6 +15,8 @@ const Resource= lazy(()=>import('./pages/subpages/resource') )
 
 const Service = lazy(() => import('./pages/subpages/services'));
 
+const Faqs=lazy(()=>import('./pages/subpages/faq'))
+
 
 function App() {
   return (
@@ -34,6 +36,7 @@ function App() {
           <Route  path ="/dashboard/resource" element={<Resource />} />
 
           <Route  path ="/dashboard/services" element={ <Service /> } />
+          <Route  path ="/dashboard/faqs" element={ <Faqs /> } />
 
          
           {/* Add more nested routes as needed */}

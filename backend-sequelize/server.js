@@ -8,6 +8,8 @@ const userRouter = require("./routes/userRoutes");
 const pageRouter = require('./routes/updateDataRoutes/pageRoutes');
 const HomeRouter = require('./routes/updateDataRoutes/homeRoutes');
 const aboutRouter = require('./routes/updateDataRoutes/aboutRoutes');
+const serviceRouter = require('./routes/updateDataRoutes/serviceRoutes');
+const ResourceRouter= require('./routes/updateDataRoutes/resourceRoutes')
 // hello this is testing
 
 
@@ -23,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
-app.use("/api", userRouter,HomeRouter,aboutRouter);
+app.use("/api", userRouter,HomeRouter,aboutRouter,serviceRouter,ResourceRouter);
 app.get("/",(req,res)=>{
   res.send("hellfffffo")
 })

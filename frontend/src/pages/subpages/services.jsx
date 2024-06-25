@@ -105,7 +105,7 @@ export default function Services() {
 
    const create = async (data) => {
       setLoading(true)
-      data.id = 2;
+      data.id = 4;
 
       try {
          console.log("data values", data)
@@ -143,7 +143,7 @@ export default function Services() {
             },
          };
 
-         await axios.post("http://localhost:8000/api/addServiceData", formData, config).then((response) => {
+         await axios.post("http://localhost:8000/api/addServicesData", formData, config).then((response) => {
             setError("");
             setUpdate(!update);
             setLoading(false);
@@ -168,7 +168,7 @@ export default function Services() {
 
    return (
       <div className="w-full">
-         <h1 className='text-gray-800 text-2xl font-semibold text-start p-3'>About Section</h1>
+         <h1 className='text-gray-800 text-2xl font-semibold text-start p-3'>Service Section</h1>
          <div className='p-5'>
             <form className='content-center' onSubmit={handleSubmit(create)}>
                <div className="flex flex-col flex-wrap justify-center">

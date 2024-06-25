@@ -45,7 +45,9 @@ const updateServicesData = async (req, res) => {
       section1buttonlink,
       section1yearsofexperience,
       section2title,
-      section2description
+      section2description,
+      name,
+      slug
   } = req.body;
   console.log(id)
 
@@ -102,7 +104,9 @@ const updateServicesData = async (req, res) => {
                   section1buttonlink,
                   section1yearsofexperience,
                   section2title,
-                  section2description
+                  section2description,
+                  name,
+                  slug
               });
 
               return res.status(200).json({ msg: "Services data added/updated successfully" });
@@ -130,7 +134,9 @@ const updateServicesData = async (req, res) => {
               section1buttonlink,
               section1yearsofexperience,
               section2title,
-              section2description
+              section2description,
+              name,
+              slug
           });
 
           return res.status(200).json({ msg: "Services data added/updated successfully", Services });

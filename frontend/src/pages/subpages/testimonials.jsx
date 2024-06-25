@@ -5,7 +5,7 @@ import RTE from '../../components/rte';
 
 
 
-export default function AboutUsCards() {
+export default function Testimonials() {
 
    const { register, handleSubmit, formState: { errors }, setValue, control, getValues } = useForm({
 
@@ -35,7 +35,7 @@ export default function AboutUsCards() {
    const fetchdata = async () => {
       setLoading(true)
       try {
-         await axios.get("http://localhost:8000/api/getCardList")
+         await axios.get("http://localhost:8000/api/getTestimonialList")
             .then(response => {
                const data = response.data.data;
                console.log(data)
@@ -93,7 +93,7 @@ export default function AboutUsCards() {
       fetchdata()
    }, [update])
 
-   const handleFileChange = (event, setFile, setimageurl) => {
+   const handleFileChange = (event, index) => {
 
       console.log(event)
       console.log(event.target.files[0])
@@ -101,9 +101,17 @@ export default function AboutUsCards() {
 
       const file = event.target.files[0];
       if (file) {
-         setFile(file);
-         const imageUrl = URL.createObjectURL(file);
-         setimageurl(imageUrl)
+         //setFile(file);
+         const newImageUrls = [...imageurl];
+      
+      // Update the specific index with the new imageUrl
+      const imageUrl = URL.createObjectURL(file);
+      newImageUrls[index] = imageUrl;
+
+      console.log("newImageUrls",newImageUrls)
+      
+      // Set the state with the updated array
+      setimageurl(newImageUrls);
       }
 
 
@@ -182,9 +190,10 @@ export default function AboutUsCards() {
 
       setcardata([...card, {
          id: "",
-         count: "",
-         text: "",
-         icon: null
+         name: "",
+            position: "",
+            image: null,
+            review_text:""
       }])
       console.log("clicked", card)
    }
@@ -210,24 +219,37 @@ export default function AboutUsCards() {
 
       const data = getValues()
 
-      const count = data[`count-${index}`]
-      const text = data[`text-${index}`]
-      const icon = data[`icon-${index}`][0]
+      console.log("data values", data)
+
+      const name = data[`name-${index}`]
+      const position = data[`position-${index}`]
+      const image = data[`image-${index}`][0]
+      const review_text = data[`review_text-${index}`][0]
+
+      console.log("clicked", name);
+      console.log("clicked", position)
+      console.log("clicked", review_text)
+
+      //console.log("clicked", icon2)
 
 
-      console.log("clicked", count);
-      console.log("clicked", text)
-      console.log("clicked", icon)
+      
 
       if (count && text ) {
 
 
+         
+
          const data = {
-            id: id,
-            count: count,
-            text: text,
-            icon: icon
+         
+            name: count,
+            position: text,
+            image: image,
+            review_text:review_text
+   
          }
+
+
          setLoading(true)
          try {
             console.log("data values", data)
@@ -253,7 +275,7 @@ export default function AboutUsCards() {
                },
             };
 
-            await axios.post("http://localhost:8000/api/updateCardData", formData, config).then((response) => {
+            await axios.post("http://localhost:8000/api/updateTestimonial", formData, config).then((response) => {
                setError("");
                setUpdate(!update);
                setLoading(false);
@@ -289,7 +311,7 @@ export default function AboutUsCards() {
 
 
 
-         await axios.post(`http://localhost:8000/api/deleteCard/${id}`).then((response) => {
+         await axios.post(`http://localhost:8000/api/deleteTestimonial/${id}`).then((response) => {
             setError("");
             setUpdate(!update);
             console.log(response.data.msg)
@@ -319,22 +341,27 @@ export default function AboutUsCards() {
       try{
          const data = getValues()
 
-         const count = data[`count-${index}`]
-         const text = data[`text-${index}`]
-         const icon = data[`icon-${index}`]
-         const icon2 = data[`icon-${index}`][0]
+         console.log("data values", data)
+
+         const name = data[`name-${index}`]
+         const position = data[`position-${index}`]
+         const image = data[`image-${index}`][0]
+         const review_text = data[`review_text-${index}`][0]
    
-         console.log("clicked", count);
-         console.log("clicked", text)
-         console.log("clicked", icon)
-         console.log("clicked", icon2)
+         console.log("clicked", name);
+         console.log("clicked", position)
+         console.log("clicked", review_text)
+
+         //console.log("clicked", icon2)
 
 
          const form = {
             
-            count: count,
-            text: text,
-            icon: icon2
+            name: count,
+            position: text,
+            image: image,
+            review_text:review_text
+
          }
 
          const formData = new FormData();
@@ -357,7 +384,7 @@ export default function AboutUsCards() {
          };
 
 
-         await axios.post("http://localhost:8000/api/addCardData", formData, config).then((response) => {
+         /*await axios.post("http://localhost:8000/api/addCardData", formData, config).then((response) => {
                setError("");
                setUpdate(!update);
                setLoading(false);
@@ -365,7 +392,7 @@ export default function AboutUsCards() {
             }).catch(error => {
                setError(error.message);
                setLoading(false);
-            })
+            })*/
 
 
 
@@ -377,9 +404,11 @@ export default function AboutUsCards() {
    }
 
 
+
+
    return (
       <div className="w-full">
-         <h1 className='text-gray-800 text-2xl font-semibold text-start p-3'>About Us Section Cards</h1>
+         <h1 className='text-gray-800 text-2xl font-semibold text-start p-3'>Testimonials</h1>
          <div className='p-5'>
 
 
@@ -396,62 +425,79 @@ export default function AboutUsCards() {
                         </div>
 
                         <div className='p-2 mt-2'>
-                           <label htmlFor="count" className="block text-lg font-medium leading-6 text-gray-900">Count</label>
+                           <label htmlFor="name" className="block text-lg font-medium leading-6 text-gray-900">Name</label>
                            <div className="mt-2">
                               <input
-                                 id="count"
-                                 name="count"
-                                 type="number"
-                                 autoComplete="number"
-                                 required
-                                 defaultValue={data.count}
-                                 className="block w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                 {...register(`count-${i}`, { required: 'count is required' })}
-                              />
-                              {errors.count && <p className="text-red-500 text-sm">{errors.count.message}</p>}
-                           </div>
-                        </div>
-
-                        <div className='p-2 mt-2'>
-                           <label htmlFor="text" className="block text-lg font-medium leading-6 text-gray-900">Text</label>
-                           <div className="mt-2">
-                              <input
-                                 id="text"
-                                 name="text"
+                                 id="name"
+                                 name="name"
                                  type="text"
                                  autoComplete="text"
                                  required
-                                 defaultValue={data.text}
+                                 defaultValue={data.name}
                                  className="block w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                 {...register(`text-${i}`, { required: 'text is required' })}
+                                 {...register(`name-${i}`, { required: 'name is required' })}
                               />
-                              {errors.text && <p className="text-red-500 text-sm">{errors.text.message}</p>}
+                              {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                           </div>
+                        </div>
+
+                        <div className='p-2 mt-2'>
+                           <label htmlFor="position" className="block text-lg font-medium leading-6 text-gray-900">Position</label>
+                           <div className="mt-2">
+                              <input
+                                 id="position"
+                                 name="position"
+                                 type="text"
+                                 autoComplete="text"
+                                 required
+                                 defaultValue={data.position}
+                                 className="block w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                 {...register(`position-${i}`, { required: 'text is required' })}
+                              />
+                              {errors.position && <p className="text-red-500 text-sm">{errors.position.message}</p>}
+                           </div>
+                        </div>
+
+                        <div className='p-2 mt-2'>
+                           <label htmlFor="review_text" className="block text-lg font-medium leading-6 text-gray-900">Review Text</label>
+                           <div className="mt-2">
+                              <input
+                                 id="review_text"
+                                 name="review_text"
+                                 type="text"
+                                 autoComplete="text"
+                                 required
+                                 defaultValue={data.review_text}
+                                 className="block w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                 {...register(`review_text-${i}`, { required: 'text is required' })}
+                              />
+                              {errors.review_text && <p className="text-red-500 text-sm">{errors.review_text.message}</p>}
                            </div>
                         </div>
 
 
                         <div className='p-2 mt-2'>
-                           <label htmlFor="icon" className="block text-lg font-medium leading-6 text-gray-900">Icon</label>
+                           <label htmlFor="icon" className="block text-lg font-medium leading-6 text-gray-900">Image</label>
                            <div className="mt-2">
                               <input
-                                 id="icon"
-                                 name="icon"
+                                 id="image"
+                                 name="image"
                                  type="file"
                                  autoComplete="text"
                                  accept='image/*'
 
-                                 onChangeCapture={(e) => handleFileChange(e, setsection1imageFile, setsection1image)}
+                                 onChangeCapture={(e) => handleFileChange(e,i)}
                                  className="block file:bg-gray-50 file:border-0
                                     file:me-4
                                     file:py-3 file:px-4 w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                 {...register(`icon-${i}`)}
+                                 {...register(`image-${i}`)}
                               />
 
-                              {errors.icon && <p className="text-red-500 text-sm">{errors.icon.message}</p>}
+                              {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
                            </div>
                            {icon && (
                               <div>
-                                 <label htmlFor="icon" className="block text-sm font-medium leading-6 text-gray-900">Current Section 1 Image</label>
+                                 <label htmlFor="icon" className="block text-sm font-medium leading-6 text-gray-900">Image</label>
                                  <img src={imageurl[i]} alt="icon" className="w-1/2 h-44" />
                               </div>
                            )}

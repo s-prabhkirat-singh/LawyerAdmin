@@ -93,7 +93,7 @@ export default function AboutUsCards() {
       fetchdata()
    }, [update])
 
-   const handleFileChange = (event, setFile, setimageurl) => {
+   const handleFileChange = (event, index) => {
 
       console.log(event)
       console.log(event.target.files[0])
@@ -101,9 +101,17 @@ export default function AboutUsCards() {
 
       const file = event.target.files[0];
       if (file) {
-         setFile(file);
-         const imageUrl = URL.createObjectURL(file);
-         setimageurl(imageUrl)
+         //setFile(file);
+         const newImageUrls = [...imageurl];
+      
+      // Update the specific index with the new imageUrl
+      const imageUrl = URL.createObjectURL(file);
+      newImageUrls[index] = imageUrl;
+
+      console.log("newImageUrls",newImageUrls)
+      
+      // Set the state with the updated array
+      setimageurl(newImageUrls);
       }
 
 
@@ -377,6 +385,8 @@ export default function AboutUsCards() {
    }
 
 
+
+
    return (
       <div className="w-full">
          <h1 className='text-gray-800 text-2xl font-semibold text-start p-3'>About Us Section Cards</h1>
@@ -440,7 +450,7 @@ export default function AboutUsCards() {
                                  autoComplete="text"
                                  accept='image/*'
 
-                                 onChangeCapture={(e) => handleFileChange(e, setsection1imageFile, setsection1image)}
+                                 onChangeCapture={(e) => handleFileChange(e,i)}
                                  className="block file:bg-gray-50 file:border-0
                                     file:me-4
                                     file:py-3 file:px-4 w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

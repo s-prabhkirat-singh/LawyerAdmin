@@ -210,7 +210,7 @@ export default function Home() {
                      {metaimage && (
                         <div>
                            <label htmlFor="metaimage" className="block text-sm font-medium leading-6 text-gray-900">Current Metaimage</label>
-                           <img src={`${metaimage}`} alt="metaimage" className="w-1/2 h-44" />
+                           <img src={`${metaimage}`} alt="metaimage" className="w-auto h-28" />
                         </div>
                      )}
 
@@ -297,7 +297,7 @@ export default function Home() {
                      {headerbgimage && (
                         <div>
                            <label htmlFor="headerbgimage" className="block text-sm font-medium leading-6 text-gray-900">Current Header Background Image</label>
-                           <img src={`${headerbgimage}`} alt="headerbgimage" className="w-1/2 h-44" />
+                           <img src={`${headerbgimage}`} alt="headerbgimage" className="w-auto h-28" />
                         </div>
                      )}
                   </div>
@@ -359,7 +359,7 @@ export default function Home() {
                      {bottomsectionimage && (
                         <div>
                            <label htmlFor="bottomsectionimage" className="block text-sm font-medium leading-6 text-gray-900">Current Bottom Section Image</label>
-                           <img src={`${bottomsectionimage}`} alt="bottomsectionimage" className="w-1/2 h-44 mb-16" />
+                           <img src={`${bottomsectionimage}`} alt="bottomsectionimage" className="w-auto h-28" />
                         </div>
                      )}
                   </div>

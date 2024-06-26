@@ -207,13 +207,13 @@ export default function Resource() {
     file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('metaimage')}
                         />
-                        {/* <button id="metaimage" name="metaimage" onClick={(e) => handleFileChange(e, setMetaImageFile)}>img</button> */}
+                        
                         {errors.metaimage && <p className="text-red-500 text-sm">{errors.metaimage.message}</p>}
                      </div>
                      {metaimage && (
                         <div>
                            <label htmlFor="metaimage" className="block text-sm font-medium leading-6 text-gray-900">Current Metaimage</label>
-                           <img src={`${metaimage}`} alt="metaimage" className="w-1/2 h-44" />
+                           <img src={`${metaimage}`} alt="metaimage" className="w-auto h-28" />
                         </div>
                      )}
 
@@ -257,7 +257,7 @@ export default function Resource() {
                      {headerbgimage && (
                         <div>
                            <label htmlFor="headerbgimage" className="block text-sm font-medium leading-6 text-gray-900">Current Header BG Image</label>
-                           <img src={`${headerbgimage}`} alt="headerbgimage" className="w-1/2 h-44" />
+                           <img src={`${headerbgimage}`} alt="headerbgimage" className="w-auto h-28" />
                         </div>
                      )}
 

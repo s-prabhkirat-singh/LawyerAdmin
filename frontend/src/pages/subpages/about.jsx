@@ -214,7 +214,7 @@ export default function About() {
                      {metaimage && (
                         <div>
                            <label htmlFor="metaimage" className="block text-sm font-medium leading-6 text-gray-900">Current Metaimage</label>
-                           <img src={`${metaimage}`} alt="metaimage" className="w-1/2 h-44" />
+                           <img src={`${metaimage}`} alt="metaimage" className="w-auto h-28" />
                         </div>
                      )}
 
@@ -258,7 +258,7 @@ export default function About() {
                      {headerbgimage && (
                         <div>
                            <label htmlFor="headerbgimage" className="block text-sm font-medium leading-6 text-gray-900">Current Header BG Image</label>
-                           <img src={`${headerbgimage}`} alt="headerbgimage" className="w-1/2 h-44" />
+                           <img src={`${headerbgimage}`} alt="headerbgimage"className="w-auto h-28"/>
                         </div>
                      )}
 
@@ -328,7 +328,7 @@ export default function About() {
                      {section1image && (
                         <div>
                            <label htmlFor="section1image" className="block text-sm font-medium leading-6 text-gray-900">Current Section 1 Image</label>
-                           <img src={`${section1image}`} alt="section1image" className="w-1/2 h-44" />
+                           <img src={`${section1image}`} alt="section1image"className="w-auto h-28" />
                         </div>
                      )}
                   </div>

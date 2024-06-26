@@ -1,14 +1,15 @@
 // Example route using the Page model
 
 
-const { Page } = require('../../models'); // Import the Page model
+const { Page } = require('../../models'); 
 
 // Create a new page
-const completeData= async (req, res) => {
+
+const completeData = async (req, res) => {
   const { id, name, slug, sequence } = req.body;
 
   try {
-   
+
 
     await Page.create({ id, name, slug, sequence });
 
@@ -19,6 +20,5 @@ const completeData= async (req, res) => {
   }
 };
 
-// Other routes for reading, updating, and deleting pages...
 
-module.exports = {completeData};
+module.exports = { completeData };

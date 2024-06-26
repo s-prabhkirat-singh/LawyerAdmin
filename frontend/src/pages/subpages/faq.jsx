@@ -219,7 +219,7 @@ export default function Faq() {
                      {metaimage && (
                         <div>
                            <label htmlFor="metaimage" className="block text-sm font-medium leading-6 text-gray-900">Current Metaimage</label>
-                           <img src={`${metaimage}`} alt="metaimage" className="w-1/2 h-44" />
+                           <img src={`${metaimage}`} alt="metaimage" className="w-auto h-28" />
                         </div>
                      )}
 
@@ -263,7 +263,7 @@ export default function Faq() {
                      {headerbgimage && (
                         <div>
                            <label htmlFor="headerbgimage" className="block text-sm font-medium leading-6 text-gray-900">Current Header BG Image</label>
-                           <img src={`${headerbgimage}`} alt="headerbgimage" className="w-1/2 h-44" />
+                           <img src={`${headerbgimage}`} alt="headerbgimage" className="w-auto h-28" />
                         </div>
                      )}
 
@@ -375,7 +375,7 @@ export default function Faq() {
                      {image && (
                         <div>
                            <label htmlFor="image" className="block text-sm font-medium leading-6 text-gray-900">Current Image</label>
-                           <img src={`${image}`} alt="image" className="w-1/2 h-44" />
+                           <img src={`${image}`} alt="image" className="w-auto h-28" />
                         </div>
                      )}
 

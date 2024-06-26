@@ -340,7 +340,7 @@ export default function AboutUsCards() {
 
                            <div>
                               <label htmlFor="icon" className="block text-sm font-medium leading-6 text-gray-900">Current Section 1 Image</label>
-                              <img src={imageurl[i]} alt="icon" className="w-1/2 h-44" />
+                              <img src={imageurl[i]} alt="icon" className="w-auto h-28" />
                            </div>
 
                         </div>

@@ -105,7 +105,7 @@ export default function Faq_QuestionAnswer() {
 
       
       const question = data[`question-${index}`]
-      const answer = data[`answer-${index}`][0]
+      const answer = data[`answer-${index}`]
 
       
       console.log("clicked", question)
@@ -133,29 +133,12 @@ export default function Faq_QuestionAnswer() {
          setLoading(true)
          try {
             console.log("data values", data)
-            const formData = new FormData();
-
-
-            
-
-            for (const [key, value] of Object.entries(data)) {
-
-               console.log(key)
-               formData.append(key, value);
-            }
-
-
-            console.log("formdata", formData.data)
+           
 
 
 
-            const config = {
-               headers: {
-                  'content-type': 'multipart/form-data',
-               },
-            };
 
-            await axios.post("http://localhost:8000/api/updateQuesData", formData, config).then((response) => {
+            await axios.post("http://localhost:8000/api/updateQuesData", data).then((response) => {
                setError("");
                setUpdate(!update);
                setLoading(false);
@@ -186,7 +169,7 @@ export default function Faq_QuestionAnswer() {
 
          
 
-         await axios.post(`http://localhost:8000/api/deleteQuestion/${id}`).then((response) => {
+         await axios.delete(`http://localhost:8000/api/deleteQuestion/${id}`).then((response) => {
             setError("");
             setUpdate(!update);
             console.log(response.data.msg)
@@ -214,7 +197,7 @@ export default function Faq_QuestionAnswer() {
          console.log("data values", data)
 
          const question = data[`question-${index}`]
-      const answer = data[`answer-${index}`][0]
+      const answer = data[`answer-${index}`]
 
       
       console.log("clicked", question)
@@ -230,16 +213,16 @@ export default function Faq_QuestionAnswer() {
    
          }
 
-         const formData = new FormData();
+         // const formData = new FormData();
 
-         for (const [key, value] of Object.entries(form)) {
+         // for (const [key, value] of Object.entries(form)) {
 
-            console.log(key)
-            formData.append(key, value);
-         }
+         //    console.log(value)
+         //    formData.append(key, value);
+         //    console.log("formdata", formData)
+         // }
 
 
-         console.log("formdata", formData.data)
 
 
 
@@ -250,7 +233,7 @@ export default function Faq_QuestionAnswer() {
          };
 
 
-         await axios.delete("http://localhost:8000/api/addQuestion", formData, config).then((response) => {
+         await axios.post("http://localhost:8000/api/addQuestion", form).then((response) => {
                setError("");
                setUpdate(!update);
                setLoading(false);
@@ -287,7 +270,7 @@ export default function Faq_QuestionAnswer() {
 
 
                         <div className='p-2 mt-2'>
-                           <h1>{i}</h1>
+                           <h1>{i+1}</h1>
                         </div>
 
                         <div className='p-2 mt-2'>

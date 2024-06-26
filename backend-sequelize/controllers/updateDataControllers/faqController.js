@@ -1,7 +1,7 @@
 // Example route using the Page model
 
 
-const { Faq } = require('../../models'); 
+const { Faq,FaqQuestionAnswers } = require('../../models'); 
 // Import the Page model
 const multer = require('multer');
 const fs = require('fs');
@@ -158,6 +158,102 @@ const updateFaqData = async (req, res) => {
         }
       };
 
+const addQueAns = async(req,res)=>{
+    const {  question, answer } = req.body;
+    console.log(question)
+    console.log(answer)
+    const faq_id=6;
+
+    try {
+     
+  
+      await FaqQuestionAnswers.create({  faq_id,question, answer});
+  
+      return res.status(200).json({ msg: "Faq Question added successfully" });
+    } catch (err) {
+      console.error("Database error:", err);
+      return res.status(500).send({ msg: "Database error" });
+    }
+  };
+  const getQuesList = async (req, res) => {
+   
+  
+    try {
+      const Questions = await FaqQuestionAnswers.findAll();
+  
+      if (!Questions) {
+        return res.status(404).json({ msg: "Questions not found" });
+      }
+  
+      return res.status(200).json({ data: Questions });
+    } catch (err) {
+      console.error("Database error:", err);
+      return res.status(500).send({ msg: "Database error" });
+    }
+  };
+
+  const deleteQues= async(req,res)=>{
+    
+    const {id}=req.params;
+    console.log(id)
+
+    try {
+   
+        const currentData = await FaqQuestionAnswers.findOne({ where: { id :id}});
+      
+        if(currentData){
+      
+            const result=await FaqQuestionAnswers.destroy({where:{id:id}});
+            if(result){
+            
+            return res.status(200).json({ msg: "Question Deleted successfully" });
+            }
+            else{
+                return res.status(400).json({msg:"Question Not Present"})
 
 
-module.exports = {updateFaqData,getFaqDataById,upload,multiUpload };
+            }
+        }
+
+       
+        
+        else{
+            return res.status(400).json({msg:"Question with specified id not present"})
+          
+        }
+       
+    
+      } catch (err) {
+        console.error("Database error:", err);
+        return res.status(500).send({ msg: "Database error" });
+      }
+
+
+  }
+  const updateQuesData= async(req,res)=>{
+    
+    const{id,question,answer}=req.body;
+   
+    
+    const currentData = await FaqQuestionAnswers.findOne({ where: { id :id}});
+    if(currentData){
+    
+    try {
+   
+
+        await FaqQuestionAnswers.upsert({ id,question,answer });
+    
+        return res.status(200).json({ msg: "Question Data Updated Successfuly" });
+      } catch (err) {
+        console.error("Database error:", err);
+        return res.status(500).send({ msg: "Database error" });
+      }
+    }
+    else{
+     
+
+        return res.status(400).send({msg:"Question with specified id not present"})
+    }
+
+  }
+module.exports = {updateFaqData,getFaqDataById,upload,multiUpload,addQueAns,getQuesList,deleteQues,updateQuesData };

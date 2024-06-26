@@ -392,7 +392,7 @@ export default function AboutUsCards() {
 
 
                         <div className='p-2 mt-2'>
-                           <h1>{data.id}</h1>
+                           <h1>{i+1}</h1>
                         </div>
 
                         <div className='p-2 mt-2'>

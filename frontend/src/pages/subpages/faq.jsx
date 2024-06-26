@@ -361,7 +361,7 @@ export default function Faq() {
                            type="file"
                            autoComplete="text"
                            accept='image/*'
-                           onChangeCapture={(e) => handleFileChange(e, setimageFile , setimage)}
+                           onChangeCapture={(e) => handleFileChange(e, setimageFile , setImage)}
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0

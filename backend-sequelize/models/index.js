@@ -31,7 +31,11 @@ Object.keys(db).forEach(modelName => {
     db[modelName].associate(db);
   }
 });
-
+sequelize.sync({ alter: true })  // Use { force: true } to drop and recreate the table each time; use { alter: true } to make only necessary changes
+  .then(() => {
+    console.log('Database & tables created!');
+  })
+  .catch(error => console.error('Unable to create tables:', error));
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

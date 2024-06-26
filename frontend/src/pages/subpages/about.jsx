@@ -16,7 +16,7 @@ export default function About() {
    const [loading, setLoading] = useState(false)
    const [error, setError] = useState("")
    const [update, setUpdate] = useState(false)
-   const [homedata, setHomadata] = useState()
+   
 
    // setting the url to show the image
    const [metaimage, setMetaImage] = useState("")
@@ -35,7 +35,7 @@ export default function About() {
          await axios.get("http://localhost:8000/api/getAboutData/2")
             .then(response => {
                const data = response.data.data;
-               setHomadata(data);
+              
                setValue('metatitle', data.metatitle);
                setValue('metadescription', data.metadescription);
                setValue('metatags', data.metatags);
@@ -103,26 +103,13 @@ export default function About() {
          headerbgimageFile == null ? "" : data.headerbgimage = headerbgimageFile;
 
 
-         // formData.append('metaimage', metaimageFile);
-         // formData.append('section1image', section1imageFile);
-         // formData.append('bottomsectionimage', bottomsectionimageFile);
+        
 
          for (const [key, value] of Object.entries(data)) {
 
             console.log(key.value)
             formData.append(key, value);
          }
-
-
-
-
-
-
-
-
-
-
-
          const config = {
             headers: {
                'content-type': 'multipart/form-data',
@@ -141,11 +128,7 @@ export default function About() {
             metaimageFile == null ? "" : setMetaImageFile(null);
             section1imageFile == null ? "" : setsection1imageFile(null);
             headerbgimageFile == null ? "" : setheaderbgimageFile(null);
-
-
          })
-
-
       } catch (error) {
          setError(error.message);
          setLoading(false);
@@ -221,8 +204,8 @@ export default function About() {
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0
-    file:me-4
-    file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                           file:me-4
+                           file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('metaimage')}
                         />
                         {/* <button id="metaimage" name="metaimage" onClick={(e) => handleFileChange(e, setMetaImageFile)}>img</button> */}
@@ -265,8 +248,8 @@ export default function About() {
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0
-    file:me-4
-    file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                           file:me-4
+                           file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('headerbgimage')}
                         />
                         {/* <button id="metaimage" name="metaimage" onClick={(e) => handleFileChange(e, setMetaImageFile)}>img</button> */}
@@ -335,8 +318,8 @@ export default function About() {
 
                            onChangeCapture={(e) => handleFileChange(e, setsection1imageFile , setsection1image)}
                            className="block file:bg-gray-50 file:border-0
-    file:me-4
-    file:py-3 file:px-4 w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              file:me-4
+                              file:py-3 file:px-4 w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('section1image')}
                         />
 

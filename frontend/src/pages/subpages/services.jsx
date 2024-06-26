@@ -51,15 +51,15 @@ export default function Services() {
                setValue('section1image', data.section1image);
                setValue('section1buttonlabel', data.section1buttonlabel);
                setValue('section1description', data.section1description);
-               setValue(`section1buttonlink`,data.section1buttonlink)
+               setValue(`section1buttonlink`, data.section1buttonlink)
 
-               
-               setValue(`section2title`,data.section2title)
+
+               setValue(`section2title`, data.section2title)
                setValue('section2description', data.section2description);
-               
 
 
-               setValue('headerbgimage',data.headerbgimage)
+
+               setValue('headerbgimage', data.headerbgimage)
 
                setValue('section1yearsofexperience', data.section1yearsofexperience);
 
@@ -67,10 +67,10 @@ export default function Services() {
                setValue('slug', data.slug);
 
                // setting the url to show the image
-               setMetaImage('http://localhost:8000/uploads/'+data.metaimage);
-               setsection1image('http://localhost:8000/uploads/'+data.section1image);
-               setheaderbgimage('http://localhost:8000/uploads/'+data.headerbgimage);
-             
+               setMetaImage('http://localhost:8000/uploads/' + data.metaimage);
+               setsection1image('http://localhost:8000/uploads/' + data.section1image);
+               setheaderbgimage('http://localhost:8000/uploads/' + data.headerbgimage);
+
 
                setError("");
                setLoading(false);
@@ -88,7 +88,7 @@ export default function Services() {
       fetchdata()
    }, [update])
 
-   const handleFileChange = (event, setFile , setimageurl) => {
+   const handleFileChange = (event, setFile, setimageurl) => {
 
       console.log(event)
       console.log(event.target.files[0])
@@ -96,8 +96,8 @@ export default function Services() {
       const file = event.target.files[0];
       if (file) {
          setFile(file);
-        const imageUrl = URL.createObjectURL(file);
-        setimageurl(imageUrl)
+         const imageUrl = URL.createObjectURL(file);
+         setimageurl(imageUrl)
       }
 
 
@@ -117,9 +117,6 @@ export default function Services() {
          headerbgimageFile == null ? "" : data.headerbgimage = headerbgimageFile;
 
 
-         // formData.append('metaimage', metaimageFile);
-         // formData.append('section1image', section1imageFile);
-         // formData.append('bottomsectionimage', bottomsectionimageFile);
 
          for (const [key, value] of Object.entries(data)) {
 
@@ -231,7 +228,7 @@ export default function Services() {
                            type="file"
                            autoComplete="text"
                            accept='image/*'
-                           onChangeCapture={(e) => handleFileChange(e, setMetaImageFile , setMetaImage)}
+                           onChangeCapture={(e) => handleFileChange(e, setMetaImageFile, setMetaImage)}
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0
@@ -275,7 +272,7 @@ export default function Services() {
                            type="file"
                            autoComplete="text"
                            accept='image/*'
-                           onChangeCapture={(e) => handleFileChange(e, setheaderbgimageFile , setheaderbgimage)}
+                           onChangeCapture={(e) => handleFileChange(e, setheaderbgimageFile, setheaderbgimage)}
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0
@@ -347,7 +344,7 @@ export default function Services() {
                            autoComplete="text"
                            accept='image/*'
 
-                           onChangeCapture={(e) => handleFileChange(e, setsection1imageFile , setsection1image)}
+                           onChangeCapture={(e) => handleFileChange(e, setsection1imageFile, setsection1image)}
                            className="block file:bg-gray-50 file:border-0
     file:me-4
     file:py-3 file:px-4 w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -371,7 +368,7 @@ export default function Services() {
 
                <div className="flex flex-col flex-wrap justify-center mt-2 mb-2">
 
-               <div className='p-2 mt-2'>
+                  <div className='p-2 mt-2'>
                      <label htmlFor="section1buttonlink" className="block text-sm font-medium leading-6 text-gray-900">Section 1 Button Link</label>
                      <div className="mt-2">
                         <input

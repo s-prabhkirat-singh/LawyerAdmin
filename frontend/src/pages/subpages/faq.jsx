@@ -9,18 +9,18 @@ export default function Faq() {
    const { register, handleSubmit, formState: { errors }, setValue, control, getValues } = useForm({
       defaultValues: {
          headerdescription: "",
-        
+
       }
    });
 
    const [loading, setLoading] = useState(false)
    const [error, setError] = useState("")
    const [update, setUpdate] = useState(false)
-   const [homedata, setHomadata] = useState()
+   
 
    // setting the url to show the image
    const [metaimage, setMetaImage] = useState("")
-  
+
    const [headerbgimage, setheaderbgimage] = useState("")
    const [image, setImage] = useState("")
 
@@ -36,7 +36,7 @@ export default function Faq() {
          await axios.get("http://localhost:8000/api/getFaqData/2")
             .then(response => {
                const data = response.data.data;
-               setHomadata(data);
+               
                setValue('metatitle', data.metatitle);
                setValue('metadescription', data.metadescription);
                setValue('metatags', data.metatags);
@@ -47,14 +47,14 @@ export default function Faq() {
                setValue('headerbuttonlabel', data.headerbuttonlabel);
                setValue('title', data.title);
                setValue('description', data.description);
-               setValue('headerbgimage',data.headerbgimage)
-               setValue('image',data.image)
+               setValue('headerbgimage', data.headerbgimage)
+               setValue('image', data.image)
 
                // setting the url to show the image
-               setMetaImage('http://localhost:8000/uploads/'+data.metaimage);
-               setheaderbgimage('http://localhost:8000/uploads/'+data.headerbgimage);
-               setImage('http://localhost:8000/uploads/'+data.image);
-             
+               setMetaImage('http://localhost:8000/uploads/' + data.metaimage);
+               setheaderbgimage('http://localhost:8000/uploads/' + data.headerbgimage);
+               setImage('http://localhost:8000/uploads/' + data.image);
+
 
                setError("");
                setLoading(false);
@@ -72,7 +72,7 @@ export default function Faq() {
       fetchdata()
    }, [update])
 
-   const handleFileChange = (event, setFile , setimageurl) => {
+   const handleFileChange = (event, setFile, setimageurl) => {
 
       console.log(event)
       console.log(event.target.files[0])
@@ -80,8 +80,8 @@ export default function Faq() {
       const file = event.target.files[0];
       if (file) {
          setFile(file);
-        const imageUrl = URL.createObjectURL(file);
-        setimageurl(imageUrl)
+         const imageUrl = URL.createObjectURL(file);
+         setimageurl(imageUrl)
       }
 
 
@@ -205,7 +205,7 @@ export default function Faq() {
                            type="file"
                            autoComplete="text"
                            accept='image/*'
-                           onChangeCapture={(e) => handleFileChange(e, setMetaImageFile , setMetaImage)}
+                           onChangeCapture={(e) => handleFileChange(e, setMetaImageFile, setMetaImage)}
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0
@@ -249,7 +249,7 @@ export default function Faq() {
                            type="file"
                            autoComplete="text"
                            accept='image/*'
-                           onChangeCapture={(e) => handleFileChange(e, setheaderbgimageFile , setheaderbgimage)}
+                           onChangeCapture={(e) => handleFileChange(e, setheaderbgimageFile, setheaderbgimage)}
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0
@@ -311,7 +311,7 @@ export default function Faq() {
                      </div>
                   </div>
 
-                
+
                </div>
 
 
@@ -320,7 +320,7 @@ export default function Faq() {
 
                <div className="flex flex-col flex-wrap justify-center mt-2 mb-2">
 
-               <div className='p-2 mt-2'>
+                  <div className='p-2 mt-2'>
                      <label htmlFor="title" className="block text-sm font-medium leading-6 text-gray-900">Title</label>
                      <div className="mt-2">
                         <input
@@ -361,7 +361,7 @@ export default function Faq() {
                            type="file"
                            autoComplete="text"
                            accept='image/*'
-                           onChangeCapture={(e) => handleFileChange(e, setimageFile , setImage)}
+                           onChangeCapture={(e) => handleFileChange(e, setimageFile, setImage)}
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0
@@ -381,12 +381,12 @@ export default function Faq() {
 
                   </div>
 
-                 
 
 
-                  
 
-                  
+
+
+
                </div>
 
                <div className="flex flex-col flex-wrap justify-center ">

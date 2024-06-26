@@ -9,7 +9,7 @@ export default function Resource() {
    const { register, handleSubmit, formState: { errors }, setValue, control, getValues } = useForm({
       defaultValues: {
          headerdescription: "",
-        
+
       }
    });
 
@@ -20,7 +20,7 @@ export default function Resource() {
 
    // setting the url to show the image
    const [metaimage, setMetaImage] = useState("")
-  
+
    const [headerbgimage, setheaderbgimage] = useState("")
 
 
@@ -45,12 +45,12 @@ export default function Resource() {
                setValue('headerbuttonlabel', data.headerbuttonlabel);
                setValue('title', data.title);
                setValue('content', data.content);
-               setValue('headerbgimage',data.headerbgimage)
+               setValue('headerbgimage', data.headerbgimage)
 
                // setting the url to show the image
-               setMetaImage('http://localhost:8000/uploads/'+data.metaimage);
-               setheaderbgimage('http://localhost:8000/uploads/'+data.headerbgimage);
-             
+               setMetaImage('http://localhost:8000/uploads/' + data.metaimage);
+               setheaderbgimage('http://localhost:8000/uploads/' + data.headerbgimage);
+
 
                setError("");
                setLoading(false);
@@ -68,7 +68,7 @@ export default function Resource() {
       fetchdata()
    }, [update])
 
-   const handleFileChange = (event, setFile , setimageurl) => {
+   const handleFileChange = (event, setFile, setimageurl) => {
 
       console.log(event)
       console.log(event.target.files[0])
@@ -76,8 +76,8 @@ export default function Resource() {
       const file = event.target.files[0];
       if (file) {
          setFile(file);
-        const imageUrl = URL.createObjectURL(file);
-        setimageurl(imageUrl)
+         const imageUrl = URL.createObjectURL(file);
+         setimageurl(imageUrl)
       }
 
 
@@ -199,7 +199,7 @@ export default function Resource() {
                            type="file"
                            autoComplete="text"
                            accept='image/*'
-                           onChangeCapture={(e) => handleFileChange(e, setMetaImageFile , setMetaImage)}
+                           onChangeCapture={(e) => handleFileChange(e, setMetaImageFile, setMetaImage)}
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0
@@ -243,7 +243,7 @@ export default function Resource() {
                            type="file"
                            autoComplete="text"
                            accept='image/*'
-                           onChangeCapture={(e) => handleFileChange(e, setheaderbgimageFile , setheaderbgimage)}
+                           onChangeCapture={(e) => handleFileChange(e, setheaderbgimageFile, setheaderbgimage)}
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0
@@ -305,7 +305,7 @@ export default function Resource() {
                      </div>
                   </div>
 
-                
+
                </div>
 
 
@@ -314,7 +314,7 @@ export default function Resource() {
 
                <div className="flex flex-col flex-wrap justify-center mt-2 mb-2">
 
-               <div className='p-2 mt-2'>
+                  <div className='p-2 mt-2'>
                      <label htmlFor="title" className="block text-sm font-medium leading-6 text-gray-900">Title</label>
                      <div className="mt-2">
                         <input
@@ -347,12 +347,12 @@ export default function Resource() {
                      </div>
                   </div>
 
-                 
 
 
-                  
 
-                  
+
+
+
                </div>
 
                <div className="flex flex-col flex-wrap justify-center ">

@@ -13,19 +13,19 @@ export default function Faq_QuestionAnswer() {
 
 
    // this will stop to delete the  cards when no more empty cards present
-   const[cardcount,setcardcount] = useState(0)
+   const [cardcount, setcardcount] = useState(0)
 
-   const [count, setcount] = useState(1)
+
 
    const [loading, setLoading] = useState(false)
    const [error, setError] = useState("")
    const [update, setUpdate] = useState(false)
    const [card, setcardata] = useState([])
 
-   const [imageurl,setimageurl] = useState([])
-   // setting the url to show the image
 
-   const [icon, seticon] = useState(true)
+
+
+
 
 
    // we will check about the if someone changed the file if yes then it will be updated and we will update the data.metaimagefile
@@ -61,7 +61,7 @@ export default function Faq_QuestionAnswer() {
       fetchdata()
    }, [update])
 
-   
+
 
 
    const create = async (data) => {
@@ -77,8 +77,8 @@ export default function Faq_QuestionAnswer() {
       setcardata([...card, {
          id: "",
          question: "",
-            answer: "",
-            
+         answer: "",
+
       }])
       console.log("clicked", card)
    }
@@ -88,11 +88,10 @@ export default function Faq_QuestionAnswer() {
    /* where as card.pop() will update the value  against the feature of hooks of immutability*/
    const deletecardscount = () => {
 
-      if(card.length > cardcount)
-      {
+      if (card.length > cardcount) {
          setcardata([...card].slice(0, card.length - 1))
       }
-      
+
    }
 
 
@@ -103,37 +102,37 @@ export default function Faq_QuestionAnswer() {
 
       console.log("data values", data)
 
-      
+
       const question = data[`question-${index}`]
       const answer = data[`answer-${index}`]
 
-      
+
       console.log("clicked", question)
       console.log("clicked", answer)
 
-      //console.log("clicked", icon2)
 
 
-      
-
-      if (question && answer ) {
 
 
-         
+
+      if (question && answer) {
+
+
+
 
          const data = {
-         
+
             id: id,
             question: question,
             answer: answer,
-   
+
          }
 
 
          setLoading(true)
          try {
             console.log("data values", data)
-           
+
 
 
 
@@ -167,7 +166,7 @@ export default function Faq_QuestionAnswer() {
 
       try {
 
-         
+
 
          await axios.delete(`http://localhost:8000/api/deleteQuestion/${id}`).then((response) => {
             setError("");
@@ -190,37 +189,30 @@ export default function Faq_QuestionAnswer() {
 
    const addata = async (index) => {
 
-      
-      try{
+
+      try {
          const data = getValues()
 
          console.log("data values", data)
 
          const question = data[`question-${index}`]
-      const answer = data[`answer-${index}`]
+         const answer = data[`answer-${index}`]
 
-      
-      console.log("clicked", question)
-      console.log("clicked", answer)
-         //console.log("clicked", icon2)
+
+         console.log("clicked", question)
+         console.log("clicked", answer)
+
 
 
          const form = {
-         
-            
+
+
             question: question,
             answer: answer,
-   
+
          }
 
-         // const formData = new FormData();
 
-         // for (const [key, value] of Object.entries(form)) {
-
-         //    console.log(value)
-         //    formData.append(key, value);
-         //    console.log("formdata", formData)
-         // }
 
 
 
@@ -234,18 +226,18 @@ export default function Faq_QuestionAnswer() {
 
 
          await axios.post("http://localhost:8000/api/addQuestion", form).then((response) => {
-               setError("");
-               setUpdate(!update);
-               setLoading(false);
-               console.log(response.data.msg)
-            }).catch(error => {
-               setError(error.message);
-               setLoading(false);
-            })
+            setError("");
+            setUpdate(!update);
+            setLoading(false);
+            console.log(response.data.msg)
+         }).catch(error => {
+            setError(error.message);
+            setLoading(false);
+         })
 
 
 
-      }catch(error){
+      } catch (error) {
          setError(error.message);
          setLoading(false);
       }
@@ -257,7 +249,7 @@ export default function Faq_QuestionAnswer() {
 
    return (
       <div className="w-full">
-         <h1 className='text-gray-800 text-2xl font-semibold text-start p-3'>Testimonials</h1>
+         <h1 className='text-gray-800 text-2xl font-semibold text-start p-3'>Faq Question Answer</h1>
          <div className='p-5'>
 
 
@@ -270,7 +262,7 @@ export default function Faq_QuestionAnswer() {
 
 
                         <div className='p-2 mt-2'>
-                           <h1>{i+1}</h1>
+                           <h1>{i + 1}</h1>
                         </div>
 
                         <div className='p-2 mt-2'>
@@ -307,10 +299,10 @@ export default function Faq_QuestionAnswer() {
                            </div>
                         </div>
 
-                        
 
 
-                        
+
+
 
                         {
                            data.id === "" ? (

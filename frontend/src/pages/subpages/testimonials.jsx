@@ -13,19 +13,19 @@ export default function Testimonials() {
 
 
    // this will stop to delete the  cards when no more empty cards present
-   const[cardcount,setcardcount] = useState(0)
+   const [cardcount, setcardcount] = useState(0)
 
-   const [count, setcount] = useState(1)
+
 
    const [loading, setLoading] = useState(false)
    const [error, setError] = useState("")
    const [update, setUpdate] = useState(false)
    const [card, setcardata] = useState([])
 
-   const [imageurl,setimageurl] = useState([])
+   const [imageurl, setimageurl] = useState([])
    // setting the url to show the image
 
-   const [icon, seticon] = useState(true)
+
 
 
    // we will check about the if someone changed the file if yes then it will be updated and we will update the data.metaimagefile
@@ -44,29 +44,6 @@ export default function Testimonials() {
 
                const urls = data.map(item => `http://localhost:8000/uploads/${item.image}`);
                setimageurl(urls);
-
-               //seticon('http://localhost:8000/uploads/' + data.icon);
-               
-               /*setHomadata(data);
-               setValue('metatitle', data.metatitle);
-               setValue('metadescription', data.metadescription);
-               setValue('metatags', data.metatags);
-               setValue('metaimage', data.metaimage);
-               setValue('headertitle', data.headertitle);
-               setValue('headerdescription', data.headerdescription);
-               setValue('section1title', data.section1title);
-               setValue('section1buttonlabel', data.section1buttonlabel);
-               setValue('icon', data.icon);
-               setValue('section1yearsofexperience', data.section1yearsofexperience);
-               setValue('section1description', data.section1description);
-               setValue('section2description', data.section2description);
-               setValue(`section2title`,data.section2title)
-               setValue(`section1buttonlink`,data.section1buttonlink)
-               setValue('headerbgimage',data.headerbgimage)
-
-               // setting the url to show the image
-               seticon('http://localhost:8000/uploads/'+data.icon);*/
-
 
 
                setError("");
@@ -101,17 +78,17 @@ export default function Testimonials() {
 
       const file = event.target.files[0];
       if (file) {
-         //setFile(file);
-         const newImageUrls = [...imageurl];
-      
-      // Update the specific index with the new imageUrl
-      const imageUrl = URL.createObjectURL(file);
-      newImageUrls[index] = imageUrl;
 
-      console.log("newImageUrls",newImageUrls)
-      
-      // Set the state with the updated array
-      setimageurl(newImageUrls);
+         const newImageUrls = [...imageurl];
+
+         // Update the specific index with the new imageUrl
+         const imageUrl = URL.createObjectURL(file);
+         newImageUrls[index] = imageUrl;
+
+         console.log("newImageUrls", newImageUrls)
+
+         // Set the state with the updated array
+         setimageurl(newImageUrls);
       }
 
 
@@ -120,65 +97,6 @@ export default function Testimonials() {
 
    const create = async (data) => {
       setLoading(true)
-      /*data.id = 2;
-
-      try {
-         console.log("data values", data)
-         const formData = new FormData();
-
-
-         metaimageFile == null ? "" : data.metaimage = metaimageFile;
-         section1imageFile == null ? "" : data.icon = section1imageFile;
-         headerbgimageFile == null ? "" : data.headerbgimage = headerbgimageFile;
-
-
-         // formData.append('metaimage', metaimageFile);
-         // formData.append('icon', section1imageFile);
-         // formData.append('bottomsectionimage', bottomsectionimageFile);
-
-         for (const [key, value] of Object.entries(data)) {
-
-            console.log(key.value)
-            formData.append(key, value);
-         }
-
-
-
-
-
-
-
-
-
-
-
-         const config = {
-            headers: {
-               'content-type': 'multipart/form-data',
-            },
-         };
-
-         await axios.post("http://localhost:8000/api/addAboutData", formData, config).then((response) => {
-            setError("");
-            setUpdate(!update);
-            setLoading(false);
-         }).catch(error => {
-            setError(error.message);
-            setLoading(false);
-         }).finally(() => {
-
-            metaimageFile == null ? "" : setMetaImageFile(null);
-            section1imageFile == null ? "" : setsection1imageFile(null);
-            headerbgimageFile == null ? "" : setheaderbgimageFile(null);
-
-
-         })
-
-
-      } catch (error) {
-         setError(error.message);
-         setLoading(false);
-      }*/
 
       console.log("create", data)
    }
@@ -186,14 +104,13 @@ export default function Testimonials() {
 
    const addcards = () => {
 
-      // const data = 
 
       setcardata([...card, {
          id: "",
          name: "",
-            position: "",
-            image: null,
-            review_text:""
+         position: "",
+         image: null,
+         review_text: ""
       }])
       console.log("clicked", card)
    }
@@ -204,13 +121,12 @@ export default function Testimonials() {
    const deletecardscount = () => {
 
 
-      
 
-      if(card.length > cardcount)
-      {
+
+      if (card.length > cardcount) {
          setcardata([...card].slice(0, card.length - 1))
       }
-      
+
    }
 
 
@@ -224,46 +140,43 @@ export default function Testimonials() {
       const name = data[`name-${index}`]
       const position = data[`position-${index}`]
       const image = data[`image-${index}`][0]
-      console.log()
-      const review_text = data[`review_text-${index}`][0]
+
+      const review_text = data[`review_text-${index}`]
 
       console.log("clicked", name);
       console.log("clicked", position)
       console.log("clicked", review_text)
 
-      //console.log("clicked", icon2)
 
 
-      
-
-      if (count && position ) {
-         if(image){
-
-         
 
 
-         
 
-          data = {
-            id:id,
-         
-            name: count,
-            position: position,
-            image: image,
-            review_text:review_text
-   
-         }}
-         else{
-            
-          data = {
-            id:id,
-         
-            name: count,
-            position: position,
-          
-            review_text:review_text
-   
+      if (name && position && review_text) {
+         if (image) {
+
+
+
+            data = {
+               id: id,
+               name: name,
+               position: position,
+               image: image,
+               review_text: review_text
+
+            }
          }
+         else {
+
+            data = {
+               id: id,
+
+               name: name,
+               position: position,
+
+               review_text: review_text
+
+            }
          }
 
          setLoading(true)
@@ -272,7 +185,7 @@ export default function Testimonials() {
             const formData = new FormData();
 
 
-            //iconfile == null ? "" : data.icon = iconfile;
+
 
             for (const [key, value] of Object.entries(data)) {
 
@@ -298,10 +211,6 @@ export default function Testimonials() {
             }).catch(error => {
                setError(error.message);
                setLoading(false);
-            }).finally(() => {
-
-               iconfile == null ? "" : seticonfile(null);
-
             })
 
 
@@ -320,12 +229,6 @@ export default function Testimonials() {
 
       try {
 
-         //console.log("data values", data)
-
-
-
-
-
 
          await axios.post(`http://localhost:8000/api/deleteTestimonial/${id}`).then((response) => {
             setError("");
@@ -335,10 +238,6 @@ export default function Testimonials() {
          }).catch(error => {
             setError(error.message);
             setLoading(false);
-         }).finally(() => {
-
-            //iconfile == null ? "" : seticonfile(null);
-
          })
 
 
@@ -353,8 +252,8 @@ export default function Testimonials() {
 
    const addata = async (index) => {
 
-      
-      try{
+
+      try {
          const data = getValues()
 
          console.log("data values", data)
@@ -362,8 +261,8 @@ export default function Testimonials() {
          const name = data[`name-${index}`]
          const position = data[`position-${index}`]
          const image = data[`image-${index}`][0]
-         const review_text = data[`review_text-${index}`][0]
-   
+         const review_text = data[`review_text-${index}`]
+
          console.log("clicked", name);
          console.log("clicked", position)
          console.log("clicked", review_text)
@@ -372,11 +271,11 @@ export default function Testimonials() {
 
 
          const form = {
-            
-            name: count,
+
+            name: name,
             position: position,
             image: image,
-            review_text:review_text
+            review_text: review_text
 
          }
 
@@ -401,18 +300,18 @@ export default function Testimonials() {
 
 
          await axios.post("http://localhost:8000/api/addTestimonial", formData, config).then((response) => {
-               setError("");
-               setUpdate(!update);
-               setLoading(false);
-               console.log(response.data.msg)
-            }).catch(error => {
-               setError(error.message);
-               setLoading(false);
-            })
+            setError("");
+            setUpdate(!update);
+            setLoading(false);
+            console.log(response.data.msg)
+         }).catch(error => {
+            setError(error.message);
+            setLoading(false);
+         })
 
 
 
-      }catch(error){
+      } catch (error) {
          setError(error.message);
          setLoading(false);
       }
@@ -437,7 +336,7 @@ export default function Testimonials() {
 
 
                         <div className='p-2 mt-2'>
-                           <h1>{data.id}</h1>
+                           <h1>{i + 1}</h1>
                         </div>
 
                         <div className='p-2 mt-2'>
@@ -502,7 +401,7 @@ export default function Testimonials() {
                                  autoComplete="text"
                                  accept='image/*'
 
-                                 onChangeCapture={(e) => handleFileChange(e,i)}
+                                 onChangeCapture={(e) => handleFileChange(e, i)}
                                  className="block file:bg-gray-50 file:border-0
                                     file:me-4
                                     file:py-3 file:px-4 w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -511,12 +410,12 @@ export default function Testimonials() {
 
                               {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
                            </div>
-                           {icon && (
-                              <div>
-                                 <label htmlFor="icon" className="block text-sm font-medium leading-6 text-gray-900">Image</label>
-                                 <img src={imageurl[i]} alt="icon" className="w-1/2 h-44" />
-                              </div>
-                           )}
+
+                           <div>
+                              <label htmlFor="icon" className="block text-sm font-medium leading-6 text-gray-900">Image</label>
+                              <img src={imageurl[i]} alt="icon" className="w-1/2 h-44" />
+                           </div>
+
                         </div>
 
                         {

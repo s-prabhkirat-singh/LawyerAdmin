@@ -13,24 +13,15 @@ export default function AboutUsCards() {
 
 
    // this will stop to delete the  cards when no more empty cards present
-   const[cardcount,setcardcount] = useState(0)
-
-   const [count, setcount] = useState(1)
-
+   const [cardcount, setcardcount] = useState(0)
    const [loading, setLoading] = useState(false)
    const [error, setError] = useState("")
    const [update, setUpdate] = useState(false)
    const [card, setcardata] = useState([])
 
-   const [imageurl,setimageurl] = useState([])
-   // setting the url to show the image
-
-   const [icon, seticon] = useState(true)
+   const [imageurl, setimageurl] = useState([])
 
 
-   // we will check about the if someone changed the file if yes then it will be updated and we will update the data.metaimagefile
-
-   const [iconfile, seticonfile] = useState(null)
 
    const fetchdata = async () => {
       setLoading(true)
@@ -44,31 +35,6 @@ export default function AboutUsCards() {
 
                const urls = data.map(item => `http://localhost:8000/uploads/${item.icon}`);
                setimageurl(urls);
-
-               //seticon('http://localhost:8000/uploads/' + data.icon);
-               
-               /*setHomadata(data);
-               setValue('metatitle', data.metatitle);
-               setValue('metadescription', data.metadescription);
-               setValue('metatags', data.metatags);
-               setValue('metaimage', data.metaimage);
-               setValue('headertitle', data.headertitle);
-               setValue('headerdescription', data.headerdescription);
-               setValue('section1title', data.section1title);
-               setValue('section1buttonlabel', data.section1buttonlabel);
-               setValue('icon', data.icon);
-               setValue('section1yearsofexperience', data.section1yearsofexperience);
-               setValue('section1description', data.section1description);
-               setValue('section2description', data.section2description);
-               setValue(`section2title`,data.section2title)
-               setValue(`section1buttonlink`,data.section1buttonlink)
-               setValue('headerbgimage',data.headerbgimage)
-
-               // setting the url to show the image
-               seticon('http://localhost:8000/uploads/'+data.icon);*/
-
-
-
                setError("");
                setLoading(false);
             }).catch(error => {
@@ -93,7 +59,7 @@ export default function AboutUsCards() {
       fetchdata()
    }, [update])
 
-   const handleFileChange = (event, setFile, setimageurl) => {
+   const handleFileChange = (event,index) => {
 
       console.log(event)
       console.log(event.target.files[0])
@@ -101,9 +67,11 @@ export default function AboutUsCards() {
 
       const file = event.target.files[0];
       if (file) {
-         setFile(file);
+         
          const imageUrl = URL.createObjectURL(file);
-         setimageurl(imageUrl)
+         const imageurl = [...imageurl];
+         imageurl[index] = imageUrl;
+         setimageurl(imageurl);
       }
 
 
@@ -112,73 +80,13 @@ export default function AboutUsCards() {
 
    const create = async (data) => {
       setLoading(true)
-      /*data.id = 2;
-
-      try {
-         console.log("data values", data)
-         const formData = new FormData();
-
-
-         metaimageFile == null ? "" : data.metaimage = metaimageFile;
-         section1imageFile == null ? "" : data.icon = section1imageFile;
-         headerbgimageFile == null ? "" : data.headerbgimage = headerbgimageFile;
-
-
-         // formData.append('metaimage', metaimageFile);
-         // formData.append('icon', section1imageFile);
-         // formData.append('bottomsectionimage', bottomsectionimageFile);
-
-         for (const [key, value] of Object.entries(data)) {
-
-            console.log(key.value)
-            formData.append(key, value);
-         }
-
-
-
-
-
-
-
-
-
-
-
-         const config = {
-            headers: {
-               'content-type': 'multipart/form-data',
-            },
-         };
-
-         await axios.post("http://localhost:8000/api/addAboutData", formData, config).then((response) => {
-            setError("");
-            setUpdate(!update);
-            setLoading(false);
-         }).catch(error => {
-            setError(error.message);
-            setLoading(false);
-         }).finally(() => {
-
-            metaimageFile == null ? "" : setMetaImageFile(null);
-            section1imageFile == null ? "" : setsection1imageFile(null);
-            headerbgimageFile == null ? "" : setheaderbgimageFile(null);
-
-
-         })
-
-
-      } catch (error) {
-         setError(error.message);
-         setLoading(false);
-      }*/
-
       console.log("create", data)
    }
 
 
    const addcards = () => {
 
-      // const data = 
+
 
       setcardata([...card, {
          id: "",
@@ -195,13 +103,10 @@ export default function AboutUsCards() {
    const deletecardscount = () => {
 
 
-      
-
-      if(card.length > cardcount)
-      {
+      if (card.length > cardcount) {
          setcardata([...card].slice(0, card.length - 1))
       }
-      
+
    }
 
 
@@ -219,7 +124,7 @@ export default function AboutUsCards() {
       console.log("clicked", text)
       console.log("clicked", icon)
 
-      if (count && text ) {
+      if (count && text) {
 
 
          const data = {
@@ -234,7 +139,6 @@ export default function AboutUsCards() {
             const formData = new FormData();
 
 
-            //iconfile == null ? "" : data.icon = iconfile;
 
             for (const [key, value] of Object.entries(data)) {
 
@@ -260,13 +164,7 @@ export default function AboutUsCards() {
             }).catch(error => {
                setError(error.message);
                setLoading(false);
-            }).finally(() => {
-
-               iconfile == null ? "" : seticonfile(null);
-
             })
-
-
          } catch (error) {
             setError(error.message);
             setLoading(false);
@@ -282,12 +180,6 @@ export default function AboutUsCards() {
 
       try {
 
-         //console.log("data values", data)
-
-
-
-
-
 
          await axios.post(`http://localhost:8000/api/deleteCard/${id}`).then((response) => {
             setError("");
@@ -297,10 +189,6 @@ export default function AboutUsCards() {
          }).catch(error => {
             setError(error.message);
             setLoading(false);
-         }).finally(() => {
-
-            //iconfile == null ? "" : seticonfile(null);
-
          })
 
 
@@ -315,15 +203,15 @@ export default function AboutUsCards() {
 
    const addata = async (index) => {
 
-      
-      try{
+
+      try {
          const data = getValues()
 
          const count = data[`count-${index}`]
          const text = data[`text-${index}`]
          const icon = data[`icon-${index}`]
          const icon2 = data[`icon-${index}`][0]
-   
+
          console.log("clicked", count);
          console.log("clicked", text)
          console.log("clicked", icon)
@@ -331,7 +219,7 @@ export default function AboutUsCards() {
 
 
          const form = {
-            
+
             count: count,
             text: text,
             icon: icon2
@@ -358,18 +246,18 @@ export default function AboutUsCards() {
 
 
          await axios.post("http://localhost:8000/api/addCardData", formData, config).then((response) => {
-               setError("");
-               setUpdate(!update);
-               setLoading(false);
-               console.log(response.data.msg)
-            }).catch(error => {
-               setError(error.message);
-               setLoading(false);
-            })
+            setError("");
+            setUpdate(!update);
+            setLoading(false);
+            console.log(response.data.msg)
+         }).catch(error => {
+            setError(error.message);
+            setLoading(false);
+         })
 
 
 
-      }catch(error){
+      } catch (error) {
          setError(error.message);
          setLoading(false);
       }
@@ -387,12 +275,12 @@ export default function AboutUsCards() {
                card.map((data, i) => (
                   <form className='content-center' onSubmit={handleSubmit(create)}>
 
-                     <div className="flex flex-col p-2 m-2 mt-2 flex-wrap justify-center border border-gray-50 shadow-md rounded-sm">
+                     <div className="flex flex-col p-2 m-2 mt-2 flex-wrap justify-center border border-gray-400 shadow-md rounded-sm">
 
 
 
                         <div className='p-2 mt-2'>
-                           <h1>{i+1}</h1>
+                           <h1>{i + 1}</h1>
                         </div>
 
                         <div className='p-2 mt-2'>
@@ -440,7 +328,7 @@ export default function AboutUsCards() {
                                  autoComplete="text"
                                  accept='image/*'
 
-                                 onChangeCapture={(e) => handleFileChange(e, setsection1imageFile, setsection1image)}
+                                 onChangeCapture={(e) => handleFileChange(e,i)}
                                  className="block file:bg-gray-50 file:border-0
                                     file:me-4
                                     file:py-3 file:px-4 w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -449,12 +337,12 @@ export default function AboutUsCards() {
 
                               {errors.icon && <p className="text-red-500 text-sm">{errors.icon.message}</p>}
                            </div>
-                           {icon && (
-                              <div>
-                                 <label htmlFor="icon" className="block text-sm font-medium leading-6 text-gray-900">Current Section 1 Image</label>
-                                 <img src={imageurl[i]} alt="icon" className="w-1/2 h-44" />
-                              </div>
-                           )}
+
+                           <div>
+                              <label htmlFor="icon" className="block text-sm font-medium leading-6 text-gray-900">Current Section 1 Image</label>
+                              <img src={imageurl[i]} alt="icon" className="w-1/2 h-44" />
+                           </div>
+
                         </div>
 
                         {

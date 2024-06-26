@@ -4,6 +4,8 @@ import axios from 'axios';
 import RTE from '../../components/rte';
 
 export default function Home() {
+
+   // default values for the form 
    const { register, handleSubmit, formState: { errors }, setValue, control, getValues } = useForm({
       defaultValues: {
          headerdescription: "",
@@ -14,7 +16,7 @@ export default function Home() {
    const [loading, setLoading] = useState(false)
    const [error, setError] = useState("")
    const [update, setUpdate] = useState(false)
-   const [homedata, setHomadata] = useState()
+
 
    const [metaimage, setMetaImage] = useState("")
    const [headerbgimage, setHeaderbgImage] = useState("")
@@ -30,7 +32,7 @@ export default function Home() {
          await axios.get("http://localhost:8000/api/getHomeData/1")
             .then(response => {
                const data = response.data.data;
-               setHomadata(data);
+
                setValue('metatitle', data.metatitle);
                setValue('metadescription', data.metadescription);
                setValue('metatags', data.metatags);
@@ -44,9 +46,9 @@ export default function Home() {
                setValue('bottomsectiondescription', data.bottomsectiondescription);
                setValue('bottomsectionimage', data.bottomsectionimage);
 
-               setMetaImage('http://localhost:8000/uploads/'+data.metaimage);
-               setHeaderbgImage('http://localhost:8000/uploads/'+data.headerbgimage);
-               setBottomSectionImage('http://localhost:8000/uploads/'+data.bottomsectionimage);
+               setMetaImage('http://localhost:8000/uploads/' + data.metaimage);
+               setHeaderbgImage('http://localhost:8000/uploads/' + data.headerbgimage);
+               setBottomSectionImage('http://localhost:8000/uploads/' + data.bottomsectionimage);
 
                setError("");
                setLoading(false);
@@ -64,7 +66,7 @@ export default function Home() {
       fetchdata()
    }, [update])
 
-   const handleFileChange = (event, setFile , setimageurl) => {
+   const handleFileChange = (event, setFile, setimageurl) => {
 
       console.log(event)
       console.log(event.target.files[0])
@@ -72,8 +74,8 @@ export default function Home() {
       const file = event.target.files[0];
       if (file) {
          setFile(file);
-        const imageUrl = URL.createObjectURL(file);
-        setimageurl(imageUrl)
+         const imageUrl = URL.createObjectURL(file);
+         setimageurl(imageUrl)
       }
 
 
@@ -93,26 +95,13 @@ export default function Home() {
          bottomsectionimageFile == null ? "" : data.bottomsectionimage = bottomsectionimageFile;
 
 
-         // formData.append('metaimage', metaimageFile);
-         // formData.append('headerbgimage', headerbgimageFile);
-         // formData.append('bottomsectionimage', bottomsectionimageFile);
+
 
          for (const [key, value] of Object.entries(data)) {
 
             console.log(key.value)
             formData.append(key, value);
          }
-
-
-
-
-
-
-
-
-
-
-
          const config = {
             headers: {
                'content-type': 'multipart/form-data',
@@ -207,12 +196,12 @@ export default function Home() {
                            type="file"
                            autoComplete="text"
                            accept='image/*'
-                           onChangeCapture={(e) => handleFileChange(e, setMetaImageFile , setMetaImage)}
+                           onChangeCapture={(e) => handleFileChange(e, setMetaImageFile, setMetaImage)}
 
 
                            className="block w-3/4 file:bg-gray-50 file:border-0
-    file:me-4
-    file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                           file:me-4
+                           file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('metaimage')}
                         />
                         {/* <button id="metaimage" name="metaimage" onClick={(e) => handleFileChange(e, setMetaImageFile)}>img</button> */}
@@ -296,10 +285,10 @@ export default function Home() {
                            autoComplete="text"
                            accept='image/*'
 
-                           onChangeCapture={(e) => handleFileChange(e, setHeaderbgImageFile , setHeaderbgImage)}
+                           onChangeCapture={(e) => handleFileChange(e, setHeaderbgImageFile, setHeaderbgImage)}
                            className="block file:bg-gray-50 file:border-0
-    file:me-4
-    file:py-3 file:px-4 w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              file:me-4
+                              file:py-3 file:px-4 w-3/4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('headerbgimage')}
                         />
 
@@ -358,10 +347,10 @@ export default function Home() {
                            autoComplete="text"
                            accept='image/*'
 
-                           onChangeCapture={(e) => handleFileChange(e, setBottomSectionImageFile , setBottomSectionImage)}
+                           onChangeCapture={(e) => handleFileChange(e, setBottomSectionImageFile, setBottomSectionImage)}
                            className="block w-3/4  file:bg-gray-50 file:border-0
-    file:me-4
-    file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                           file:me-4
+                           file:py-3 file:px-4 rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                            {...register('bottomsectionimage')}
                         />
 

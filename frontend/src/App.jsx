@@ -19,6 +19,8 @@ const Faqs=lazy(()=>import('./pages/subpages/faq'))
 
 const  Testimonials = lazy(()=>import('./pages/subpages/testimonials'))
 
+const Faq_QuestionAnswer = lazy(()=>import('./pages/subpages/faq_questionanswer'))
+
 function App() {
   return (
     <BrowserRouter>
@@ -40,6 +42,8 @@ function App() {
           <Route  path ="/dashboard/faqs" element={ <Faqs /> } />
 
           <Route  path ="/dashboard/testimonials" element={ <Testimonials /> } />
+
+          <Route  path ="/dashboard/faq_questionanswer" element={ <Faq_QuestionAnswer /> } />
 
          
           {/* Add more nested routes as needed */}
